@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crocodile - Checkout</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f5;
+            color: #17231c;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .header {
+            background: #07351f;
+            color: white;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            border: 0;
+            background: #168b45;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .back-btn:hover {
+            background: #1da653;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 18px 50px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #07351f;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #66736b;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            padding: 22px;
+        }
+
+        .card h2 {
+            color: #07351f;
+            margin-bottom: 18px;
+            font-size: 21px;
+        }
+
+        /* PRODUCTS */
+
+        #checkoutItems {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .checkout-product {
+            border: 1px solid #e2e9e4;
+            border-radius: 12px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 100px minmax(0, 1fr);
+            gap: 16px;
+            background: #fbfdfc;
+        }
+
+        .checkout-product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #edf2ef;
+        }
+
+        .checkout-product-info {
+            min-width: 0;
+        }
+
+        .checkout-product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #07351f;
+            margin-bottom: 7px;
+            word-break: break-word;
+        }
+
+        .checkout-product-description {
+            color: #68756e;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 9px;
+        }
+
+        .checkout-product-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .checkout-product-price {
+            color: #168b45;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .checkout-product-quantity {
+            background: #e9f5ed;
+            color: #07351f;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .checkout-product-total {
+            margin-left: auto;
+            font-weight: 800;
+            color: #17231c;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #25342b;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            border: 1px solid #ccd8d0;
+            border-radius: 9px;
+            padding: 12px 13px;
+            outline: none;
+            background: white;
+            color: #17231c;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #168b45;
+            box-shadow: 0 0 0 3px rgba(22, 139, 69, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .payment-reference {
+            display: none;
+        }
+
+        .payment-reference.show {
+            display: block;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            position: sticky;
+            top: 90px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px 0;
+            color: #56635b;
+        }
+
+        .summary-row strong {
+            color: #17231c;
+        }
+
+        .summary-divider {
+            border: 0;
+            border-top: 1px solid #e1e8e3;
+            margin: 8px 0;
+        }
+
+        .summary-total {
+            font-size: 21px;
+            font-weight: 800;
+            color: #07351f;
+        }
+
+        .buy-btn {
+            width: 100%;
+            border: 0;
+            background: #168b45;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 16px;
+            margin-top: 18px;
+        }
+
+        .buy-btn:hover {
+            background: #11763a;
+        }
+
+        .buy-btn:disabled {
+            background: #94a69b;
+            cursor: not-allowed;
+        }
+
+        .secure-note {
+            margin-top: 13px;
+            text-align: center;
+            color: #718078;
+            font-size: 12px;
+        }
+
+        /* EMPTY / ERROR */
+
+        .message-box {
+            text-align: center;
+            padding: 45px 20px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .message-box h2 {
+            color: #07351f;
+            margin-bottom: 10px;
+        }
+
+        .message-box p {
+            color: #68756e;
+            line-height: 1.5;
+        }
+
+        .message-box button {
+            margin-top: 18px;
+            border: 0;
+            background: #168b45;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* SUCCESS */
+
+        #successBox {
+            display: none;
+        }
+
+        .success-box {
+            max-width: 700px;
+            margin: 60px auto;
+            background: white;
+            border-radius: 18px;
+            padding: 45px 25px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .success-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #e3f5e9;
+            color: #168b45;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 900;
+        }
+
+        .success-box h1 {
+            color: #07351f;
+            margin-bottom: 10px;
+        }
+
+        .success-box p {
+            color: #65726a;
+            line-height: 1.6;
+        }
+
+        .order-ids {
+            margin: 20px auto;
+            padding: 15px;
+            background: #f3f8f4;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .order-id-item {
+            padding: 6px 0;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .continue-btn {
+            border: 0;
+            background: #168b45;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 9px;
+            font-weight: 800;
+            margin-top: 10px;
+        }
+
+        .continue-btn:hover {
+            background: #11763a;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px 20px;
+            color: #68756e;
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid #dce8df;
+            border-top-color: #168b45;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-text {
+            color: #b42318;
+            background: #fff1f0;
+            border: 1px solid #f0c7c4;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        @media (max-width: 850px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .header {
+                padding: 14px 15px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .page {
+                margin-top: 20px;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .checkout-product {
+                grid-template-columns: 75px minmax(0, 1fr);
+                padding: 12px;
+            }
+
+            .checkout-product-image {
+                width: 75px;
+                height: 75px;
+            }
+
+            .checkout-product-total {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">🐊 Crocodile</div>
+
+    <button class="back-btn" onclick="goBack()">
+        ← Back
+    </button>
+</header>
+
+
+<!-- ==================== CHECKOUT PAGE ==================== -->
+
+<div id="productPage">
+
+    <main class="page">
+
+        <div class="page-title">
+            <h1>Checkout</h1>
+            <p>Review your products and complete your order.</p>
+        </div>
+
+        <div id="loadingBox" class="loading">
+            <div class="spinner"></div>
+            Loading your products...
+        </div>
+
+
+        <div id="checkoutContent" class="checkout-layout" style="display:none;">
+
+            <!-- LEFT -->
+
+            <div>
+
+                <div class="card">
+
+                    <h2>🛍️ Your Products</h2>
+
+                    <div id="checkoutItems"></div>
+
+                </div>
+
+
+                <div class="card" style="margin-top:20px;">
+
+                    <h2>📦 Delivery Information</h2>
+
+                    <div id="errorMessage" class="error-text"></div>
+
+                    <form id="checkoutForm">
+
+                        <div class="form-group">
+                            <label for="customerName">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customerName"
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="customerPhone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="customerPhone"
+                                placeholder="Enter your phone number"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="customerAddress">
+                                Delivery Address
+                            </label>
+
+                            <textarea
+                                id="customerAddress"
+                                placeholder="Enter your complete delivery address"
+                                required
+                            ></textarea>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="paymentMethod">
+                                Payment Method
+                            </label>
+
+                            <select id="paymentMethod" required>
+
+                                <option value="cod">
+                                    Cash on Delivery
+                                </option>
+
+                                <option value="upi">
+                                    UPI
+                                </option>
+
+                                <option value="card">
+                                    Card
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div
+                            id="paymentReferenceBox"
+                            class="form-group payment-reference"
+                        >
+
+                            <label for="paymentReference">
+                                Payment Reference
+                            </label>
+
+                            <input
+                                type="text"
+                                id="paymentReference"
+                                placeholder="Enter transaction/reference ID"
+                            >
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="card summary">
+
+                <h2>🧾 Order Summary</h2>
+
+
+                <div class="summary-row">
+                    <span>Products</span>
+                    <strong id="summaryProductCount">0</strong>
+                </div>
+
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <strong id="summarySubtotal">₹0.00</strong>
+                </div>
+
+
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <strong id="summaryDelivery">₹0.00</strong>
+                </div>
+
+
+                <hr class="summary-divider">
+
+
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <strong id="summaryTotal">₹0.00</strong>
+                </div>
+
+
+                <button
+                    type="button"
+                    id="placeOrderBtn"
+                    class="buy-btn"
+                    onclick="placeOrder()"
+                >
+                    Place Order
+                </button>
+
+
+                <div class="secure-note">
+                    🔒 Secure checkout powered by Crocodile
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ==================== SUCCESS ==================== -->
+
+<div id="successBox">
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Order Placed Successfully!</h1>
+
+        <p>
+            Thank you for shopping with Crocodile.
+            Your order has been successfully placed.
+        </p>
+
+
+        <div class="order-ids">
+
+            <strong>Order ID(s)</strong>
+
+            <div id="successOrderIds"></div>
+
+        </div>
+
+
+        <p>
+            The seller has been notified about your purchase.
+        </p>
+
+
+        <button
+            class="continue-btn"
+            onclick="continueShopping()"
+        >
+            Continue Shopping
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
+
+    const SUPABASE_URL =
+        "https://kczfbgqdsvlaghjhtevs.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjemZiZ3Fkc3ZsYWdoamh0ZXZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzc0MDksImV4cCI6MjEwNTgxMzQwOX0.zVcum-8MAy69fqNjKzLOTP7VCFYTOapMzH_uktJrKII";
+
+
+    let crocodileSupabase = null;
+
+    if (window.supabase) {
+
+        crocodileSupabase =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+    }
+
+
+    /* =========================================================
+       GLOBAL DATA
+    ========================================================= */
+
+    let checkoutProducts = [];
+
+    let isCartCheckout = false;
+
+    const DELIVERY_FEE = 0;
+
+
+    /* =========================================================
+       HELPERS
+    ========================================================= */
+
+    function money(value) {
+
+        const amount = Number(value) || 0;
+
+        return "₹" + amount.toFixed(2);
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function getProductId(item) {
+
+        if (!item) {
+            return null;
+        }
+
+        return (
+            item.product_id ??
+            item.productId ??
+            item.id ??
+            null
+        );
+
+    }
+
+
+    function getQuantity(item) {
+
+        const quantity = Number(
+            item?.quantity ??
+            item?.qty ??
+            1
+        );
+
+        if (!Number.isFinite(quantity) || quantity < 1) {
+            return 1;
+        }
+
+        return Math.floor(quantity);
+
+    }
+
+
+    function normalizeProduct(row, cartItem = null) {
+
+        const productId =
+            row?.id ??
+            getProductId(cartItem);
+
+        const name =
+            row?.name ??
+            row?.product_name ??
+            row?.title ??
+            cartItem?.name ??
+            cartItem?.product_name ??
+            "Product";
+
+
+        const description =
+            row?.description ??
+            row?.product_description ??
+            cartItem?.description ??
+            "";
+
+
+        const price = Number(
+            row?.price ??
+            row?.product_price ??
+            row?.selling_price ??
+            row?.sale_price ??
+            cartItem?.price ??
+            cartItem?.product_price ??
+            0
+        ) || 0;
+
+
+        const image =
+            row?.image ??
+            row?.image_url ??
+            row?.product_image ??
+            row?.product_image_url ??
+            row?.thumbnail ??
+            cartItem?.image ??
+            cartItem?.image_url ??
+            cartItem?.product_image ??
+            "";
+
+
+        const stock =
+            row?.stock ??
+            cartItem?.stock ??
+            null;
+
+
+        const sellerId =
+            row?.seller_id ??
+            row?.sellerId ??
+            cartItem?.seller_id ??
+            cartItem?.sellerId ??
+            null;
+
+
+        return {
+
+            ...row,
+
+            id: productId,
+
+            name,
+
+            description,
+
+            price,
+
+            image,
+
+            stock,
+
+            seller_id: sellerId,
+
+            quantity: getQuantity(cartItem)
+
+        };
+
+    }
+
+
+    /* =========================================================
+       GET CART
+    ========================================================= */
+
+    function getCheckoutCart() {
+
+        let savedCheckoutCart = null;
+
+        let savedCart = null;
+
+
+        try {
+
+            savedCheckoutCart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "crocodileCheckoutCart"
+                    ) || "null"
+                );
+
+        } catch (error) {
+
+            savedCheckoutCart = null;
+
+        }
+
+
+        try {
+
+            savedCart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "crocodileCart"
+                    ) || "null"
+                );
+
+        } catch (error) {
+
+            savedCart = null;
+
+        }
+
+
+        if (
+            Array.isArray(savedCheckoutCart) &&
+            savedCheckoutCart.length > 0
+        ) {
+
+            return savedCheckoutCart;
+
+        }
+
+
+        if (
+            Array.isArray(savedCart) &&
+            savedCart.length > 0
+        ) {
+
+            return savedCart;
+
+        }
+
+
+        return [];
+
+    }
+
+
+    /* =========================================================
+       LOAD SINGLE PRODUCT
+       BUY NOW MODE
+    ========================================================= */
+
+    async function loadSingleProduct(productId) {
+
+        if (!crocodileSupabase) {
+
+            throw new Error(
+                "Supabase could not be initialized."
+            );
+
+        }
+
+
+        if (!productId) {
+
+            throw new Error(
+                "Product ID is missing."
+            );
+
+        }
+
+
+        const {
+            data,
+            error
+        } = await crocodileSupabase
+            .from("products")
+            .select("*")
+            .eq("id", productId)
+            .limit(1);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.length === 0) {
+
+            throw new Error(
+                "Product not found."
+            );
+
+        }
+
+
+        const quantity =
+            Number(
+                localStorage.getItem(
+                    "crocodileCheckoutQuantity"
+                )
+            ) || 1;
+
+
+        return [
+            normalizeProduct(
+                data[0],
+                {
+                    id: data[0].id,
+                    quantity: quantity
+                }
+            )
+        ];
+
+    }
+
+
+    /* =========================================================
+       LOAD MULTIPLE CART PRODUCTS
+    ========================================================= */
+
+    async function loadCartProducts(cart) {
+
+        if (!crocodileSupabase) {
+
+            throw new Error(
+                "Supabase could not be initialized."
+            );
+
+        }
+
+
+        if (!Array.isArray(cart) || cart.length === 0) {
+
+            throw new Error(
+                "Your cart is empty."
+            );
+
+        }
+
+
+        /*
+         * Build unique product IDs.
+         */
+
+        const ids = [];
+
+        const cartById = new Map();
+
+
+        for (const item of cart) {
+
+            const id = getProductId(item);
+
+            if (!id) {
+                continue;
+            }
+
+
+            const idString = String(id);
+
+            if (!ids.includes(idString)) {
+                ids.push(idString);
+            }
+
+
+            cartById.set(
+                idString,
+                item
+            );
+
+        }
+
+
+        if (ids.length === 0) {
+
+            throw new Error(
+                "No valid products were found in your cart."
+            );
+
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Fetch ALL product IDs, not only the first one.
+         */
+
+        const {
+            data,
+            error
+        } = await crocodileSupabase
+            .from("products")
+            .select("*")
+            .in("id", ids);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.length === 0) {
+
+            throw new Error(
+                "The products in your cart could not be found."
+            );
+
+        }
+
+
+        const productMap = new Map();
+
+
+        for (const row of data) {
+
+            productMap.set(
+                String(row.id),
+                row
+            );
+
+        }
+
+
+        const products = [];
+
+
+        /*
+         * Preserve the same order as the cart.
+         */
+
+        for (const id of ids) {
+
+            const row =
+                productMap.get(id);
+
+            const cartItem =
+                cartById.get(id);
+
+
+            if (!row) {
+
+                console.warn(
+                    "Product not found:",
+                    id
+                );
+
+                continue;
+
+            }
+
+
+            products.push(
+                normalizeProduct(
+                    row,
+                    cartItem
+                )
+            );
+
+        }
+
+
+        if (products.length === 0) {
+
+            throw new Error(
+                "None of the cart products are available."
+            );
+
+        }
+
+
+        return products;
+
+    }
+
+
+    /* =========================================================
+       LOAD CHECKOUT
+    ========================================================= */
+
+    async function loadCheckout() {
+
+        try {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            isCartCheckout =
+                params.get("fromCart") === "true";
+
+
+            let products = [];
+
+
+            /*
+             * CART CHECKOUT
+             */
+
+            if (isCartCheckout) {
+
+                const cart =
+                    getCheckoutCart();
+
+
+                products =
+                    await loadCartProducts(
+                        cart
+                    );
+
+            }
+
+
+            /*
+             * BUY NOW
+             */
+
+            else {
+
+                const productId =
+                    params.get("productId") ||
+                    localStorage.getItem(
+                        "crocodileCheckoutProductId"
+                    ) ||
+                    localStorage.getItem(
+                        "productId"
+                    );
+
+
+                if (!productId) {
+
+                    throw new Error(
+                        "No product was selected."
+                    );
+
+                }
+
+
+                products =
+                    await loadSingleProduct(
+                        productId
+                    );
+
+            }
+
+
+            checkoutProducts =
+                products;
+
+
+            renderProducts();
+
+            updateSummary();
+
+
+            document.getElementById(
+                "loadingBox"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "checkoutContent"
+            ).style.display = "grid";
+
+
+        } catch (error) {
+
+            console.error(
+                "Checkout loading error:",
+                error
+            );
+
+
+            document.getElementById(
+                "loadingBox"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "checkoutContent"
+            ).style.display = "none";
+
+
+            showPageError(
+                error.message ||
+                "Unable to load checkout."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RENDER ALL PRODUCTS
+    ========================================================= */
+
+    function renderProducts() {
+
+        const container =
+            document.getElementById(
+                "checkoutItems"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        if (
+            !checkoutProducts ||
+            checkoutProducts.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="message-box">
+                    <h2>Your cart is empty</h2>
+                    <p>Please add products before checkout.</p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            checkoutProducts
+                .map((product, index) => {
+
+                    const quantity =
+                        getQuantity(product);
+
+
+                    const total =
+                        product.price *
+                        quantity;
+
+
+                    const image =
+                        product.image ||
+                        "https://via.placeholder.com/200x200?text=Crocodile";
+
+
+                    return `
+
+                        <div
+                            class="checkout-product"
+                            data-index="${index}"
+                        >
+
+                            <img
+                                class="checkout-product-image"
+                                src="${escapeHtml(image)}"
+                                alt="${escapeHtml(product.name)}"
+                                onerror="this.src='https://via.placeholder.com/200x200?text=Product'"
+                            >
+
+
+                            <div class="checkout-product-info">
+
+                                <div class="checkout-product-name">
+                                    ${escapeHtml(product.name)}
+                                </div>
+
+
+                                ${
+                                    product.description
+                                        ? `
+                                            <div class="checkout-product-description">
+                                                ${escapeHtml(
+                                                    product.description
+                                                )}
+                                            </div>
+                                          `
+                                        : ""
+                                }
+
+
+                                <div class="checkout-product-row">
+
+                                    <span class="checkout-product-price">
+                                        ${money(product.price)}
+                                    </span>
+
+
+                                    <span class="checkout-product-quantity">
+                                        Quantity: ${quantity}
+                                    </span>
+
+
+                                    <span class="checkout-product-total">
+                                        Total: ${money(total)}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       SUMMARY
+    ========================================================= */
+
+    function calculateSubtotal() {
+
+        return checkoutProducts.reduce(
+            (total, product) => {
+
+                const quantity =
+                    getQuantity(product);
+
+                const price =
+                    Number(product.price) || 0;
+
+                return total +
+                    (price * quantity);
+
+            },
+            0
+        );
+
+    }
+
+
+    function calculateItemCount() {
+
+        return checkoutProducts.reduce(
+            (total, product) => {
+
+                return total +
+                    getQuantity(product);
+
+            },
+            0
+        );
+
+    }
+
+
+    function updateSummary() {
+
+        const subtotal =
+            calculateSubtotal();
+
+
+        const itemCount =
+            calculateItemCount();
+
+
+        const delivery =
+            checkoutProducts.length > 0
+                ? DELIVERY_FEE
+                : 0;
+
+
+        const total =
+            subtotal +
+            delivery;
+
+
+        document.getElementById(
+            "summaryProductCount"
+        ).textContent =
+            itemCount;
+
+
+        document.getElementById(
+            "summarySubtotal"
+        ).textContent =
+            money(subtotal);
+
+
+        document.getElementById(
+            "summaryDelivery"
+        ).textContent =
+            money(delivery);
+
+
+        document.getElementById(
+            "summaryTotal"
+        ).textContent =
+            money(total);
+
+    }
+
+
+    /* =========================================================
+       PAYMENT METHOD
+    ========================================================= */
+
+    document
+        .getElementById("paymentMethod")
+        .addEventListener(
+            "change",
+            function () {
+
+                const box =
+                    document.getElementById(
+                        "paymentReferenceBox"
+                    );
+
+
+                if (
+                    this.value === "upi" ||
+                    this.value === "card"
+                ) {
+
+                    box.classList.add("show");
+
+                } else {
+
+                    box.classList.remove("show");
+
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       SHOW ERROR
+    ========================================================= */
+
+    function showError(message) {
+
+        const errorBox =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        errorBox.textContent =
+            message;
+
+
+        errorBox.classList.add(
+            "show"
+        );
+
+
+        errorBox.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+
+    function hideError() {
+
+        const errorBox =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        errorBox.textContent =
+            "";
+
+
+        errorBox.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    function showPageError(message) {
+
+        const page =
+            document.getElementById(
+                "productPage"
+            );
+
+
+        page.innerHTML = `
+
+            <main class="page">
+
+                <div class="message-box">
+
+                    <h2>⚠️ Checkout Error</h2>
+
+                    <p>
+                        ${escapeHtml(message)}
+                    </p>
+
+                    <button onclick="goBack()">
+                        Go Back
+                    </button>
+
+                </div>
+
+            </main>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       VALIDATE STOCK
+    ========================================================= */
+
+    function validateProducts() {
+
+        for (const product of checkoutProducts) {
+
+            const quantity =
+                getQuantity(product);
+
+
+            if (
+                product.stock !== null &&
+                product.stock !== undefined &&
+                product.stock !== ""
+            ) {
+
+                const stock =
+                    Number(product.stock);
+
+
+                if (
+                    Number.isFinite(stock) &&
+                    quantity > stock
+                ) {
+
+                    throw new Error(
+                        `"${product.name}" has only ${stock} item(s) available.`
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================================================
+       GET CURRENT USER
+    ========================================================= */
+
+    async function getCurrentUser() {
+
+        if (!crocodileSupabase) {
+
+            throw new Error(
+                "Supabase is not initialized."
+            );
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await crocodileSupabase
+                .auth
+                .getUser();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || !data.user) {
+
+            throw new Error(
+                "Please login before placing your order."
+            );
+
+        }
+
+
+        return data.user;
+
+    }
+
+
+    /* =========================================================
+       SEND PURCHASE MESSAGE TO SELLER
+    ========================================================= */
+
+    async function sendPurchaseMessageToSeller(
+        orderId,
+        product,
+        user,
+        customerName,
+        customerPhone
+    ) {
+
+        /*
+         * No seller = nothing to send.
+         */
+
+        if (!product.seller_id) {
+
+            console.warn(
+                "Seller ID missing for product:",
+                product.id
+            );
+
+            return;
+
+        }
+
+
+        const quantity =
+            getQuantity(product);
+
+
+        const subtotal =
+            Number(product.price) *
+            quantity;
+
+
+        const message =
+            `New purchase received.
+
+Order ID: ${orderId}
+
+Product: ${product.name}
+
+Quantity: ${quantity}
+
+Product Total: ${money(subtotal)}
+
+Customer: ${customerName}
+
+Phone: ${customerPhone}
+
+Please check your seller dashboard for the order details.`;
+
+
+        /*
+         * IMPORTANT:
+         *
+         * Do not add product_id or order_id here.
+         * This avoids foreign-key type problems if
+         * seller_messages uses a different schema.
+         */
+
+        const {
+            error
+        } =
+            await crocodileSupabase
+                .from("seller_messages")
+                .insert({
+
+                    seller_id:
+                        product.seller_id,
+
+                    buyer_id:
+                        user.id,
+
+                    message:
+                        message
+
+                });
+
+
+        if (error) {
+
+            /*
+             * Do not fail the whole purchase only because
+             * the optional seller message failed.
+             */
+
+            console.error(
+                "Seller message failed:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CREATE ONE ORDER
+    ========================================================= */
+
+    async function createOrder(
+        product,
+        user,
+        customerName,
+        customerPhone,
+        customerAddress,
+        paymentMethod,
+        paymentReference
+    ) {
+
+        const quantity =
+            getQuantity(product);
+
+
+        const price =
+            Number(product.price) || 0;
+
+
+        const subtotal =
+            price * quantity;
+
+
+        const total =
+            subtotal + DELIVERY_FEE;
+
+
+        const orderPayload = {
+
+            buyer_id:
+                user.id,
+
+            product_id:
+                product.id,
+
+            product_name:
+                product.name,
+
+            product_image:
+                product.image || null,
+
+            quantity:
+                quantity,
+
+            product_price:
+                price,
+
+            subtotal:
+                subtotal,
+
+            delivery_fee:
+                DELIVERY_FEE,
+
+            total_amount:
+                total,
+
+            payment_method:
+                paymentMethod,
+
+            payment_status:
+                "pending",
+
+            order_status:
+                "placed",
+
+            customer_name:
+                customerName,
+
+            customer_phone:
+                customerPhone,
+
+            customer_address:
+                customerAddress,
+
+            payment_reference:
+                paymentReference || null
+
+        };
+
+
+        /*
+         * Seller dashboard expects seller_id.
+         */
+
+        if (product.seller_id) {
+
+            orderPayload.seller_id =
+                product.seller_id;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await crocodileSupabase
+                .from("orders")
+                .insert(orderPayload)
+                .select("id")
+                .single();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || !data.id) {
+
+            throw new Error(
+                "Order was created but the order ID could not be retrieved."
+            );
+
+        }
+
+
+        return data.id;
+
+    }
+
+
+    /* =========================================================
+       PLACE ORDER
+    ========================================================= */
+
+    async function placeOrder() {
+
+        hideError();
+
+
+        const button =
+            document.getElementById(
+                "placeOrderBtn"
+            );
+
+
+        try {
+
+            if (
+                !checkoutProducts ||
+                checkoutProducts.length === 0
+            ) {
+
+                throw new Error(
+                    "There are no products to order."
+                );
+
+            }
+
+
+            validateProducts();
+
+
+            const customerName =
+                document
+                    .getElementById(
+                        "customerName"
+                    )
+                    .value
+                    .trim();
+
+
+            const customerPhone =
+                document
+                    .getElementById(
+                        "customerPhone"
+                    )
+                    .value
+                    .trim();
+
+
+            const customerAddress =
+                document
+                    .getElementById(
+                        "customerAddress"
+                    )
+                    .value
+                    .trim();
+
+
+            const paymentMethod =
+                document
+                    .getElementById(
+                        "paymentMethod"
+                    )
+                    .value;
+
+
+            const paymentReference =
+                document
+                    .getElementById(
+                        "paymentReference"
+                    )
+                    .value
+                    .trim();
+
+
+            if (!customerName) {
+
+                throw new Error(
+                    "Please enter your full name."
+                );
+
+            }
+
+
+            if (!customerPhone) {
+
+                throw new Error(
+                    "Please enter your phone number."
+                );
+
+            }
+
+
+            if (!customerAddress) {
+
+                throw new Error(
+                    "Please enter your delivery address."
+                );
+
+            }
+
+
+            if (
+                (paymentMethod === "upi" ||
+                 paymentMethod === "card") &&
+                !paymentReference
+            ) {
+
+                throw new Error(
+                    "Please enter your payment reference."
+                );
+
+            }
+
+
+            const phoneDigits =
+                customerPhone.replace(
+                    /\D/g,
+                    ""
+                );
+
+
+            if (
+                phoneDigits.length < 7
+            ) {
+
+                throw new Error(
+                    "Please enter a valid phone number."
+                );
+
+            }
+
+
+            const user =
+                await getCurrentUser();
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Placing Order...";
+
+
+            const orderIds = [];
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Every product gets its own order.
+             *
+             * So if the cart contains:
+             *
+             * Product A x 2
+             * Product B x 1
+             * Product C x 3
+             *
+             * this creates 3 orders.
+             */
+
+            for (
+                const product of checkoutProducts
+            ) {
+
+                const orderId =
+                    await createOrder(
+                        product,
+                        user,
+                        customerName,
+                        customerPhone,
+                        customerAddress,
+                        paymentMethod,
+                        paymentReference
+                    );
+
+
+                orderIds.push(
+                    orderId
+                );
+
+
+                /*
+                 * Send message to the seller
+                 * belonging to this product.
+                 */
+
+                await sendPurchaseMessageToSeller(
+                    orderId,
+                    product,
+                    user,
+                    customerName,
+                    customerPhone
+                );
+
+            }
+
+
+            /*
+             * Remove purchased cart items.
+             */
+
+            if (isCartCheckout) {
+
+                clearPurchasedCart(
+                    checkoutProducts
+                );
+
+            }
+
+
+            /*
+             * Clear checkout temporary storage.
+             */
+
+            localStorage.removeItem(
+                "crocodileCheckoutCart"
+            );
+
+            localStorage.removeItem(
+                "crocodileCheckoutFromCart"
+            );
+
+            localStorage.removeItem(
+                "crocodileCheckoutProductId"
+            );
+
+            localStorage.removeItem(
+                "crocodileCheckoutQuantity"
+            );
+
+
+            showSuccess(
+                orderIds
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Place order error:",
+                error
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "Place Order";
+
+
+            showError(
+                error.message ||
+                "Unable to place your order. Please try again."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CLEAR PURCHASED ITEMS
+    ========================================================= */
+
+    function clearPurchasedCart(
+        purchasedProducts
+    ) {
+
+        let cart = [];
+
+
+        try {
+
+            cart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "crocodileCart"
+                    ) || "[]"
+                );
+
+        } catch (error) {
+
+            cart = [];
+
+        }
+
+
+        if (!Array.isArray(cart)) {
+
+            cart = [];
+
+        }
+
+
+        const purchasedIds =
+            new Set(
+                purchasedProducts
+                    .map(product =>
+                        String(product.id)
+                    )
+            );
+
+
+        const remaining =
+            cart.filter(item => {
+
+                const id =
+                    getProductId(item);
+
+
+                if (!id) {
+                    return true;
+                }
+
+
+                return !purchasedIds.has(
+                    String(id)
+                );
+
+            });
+
+
+        localStorage.setItem(
+            "crocodileCart",
+            JSON.stringify(
+                remaining
+            )
+        );
+
+    }
+
+
+    /* =========================================================
+       SUCCESS
+    ========================================================= */
+
+    function showSuccess(orderIds) {
+
+        document.getElementById(
+            "productPage"
+        ).style.display = "none";
+
+
+        const successBox =
+            document.getElementById(
+                "successBox"
+            );
+
+
+        successBox.style.display =
+            "block";
+
+
+        const idsContainer =
+            document.getElementById(
+                "successOrderIds"
+            );
+
+
+        idsContainer.innerHTML =
+            orderIds
+                .map(
+                    id => `
+                        <div class="order-id-item">
+                            <strong>Order:</strong>
+                            ${escapeHtml(id)}
+                        </div>
+                    `
+                )
+                .join("");
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* =========================================================
+       BACK
+    ========================================================= */
+
+    function goBack() {
+
+        if (
+            document.referrer &&
+            document.referrer !==
+            window.location.href
+        ) {
+
+            window.history.back();
+
+        } else {
+
+            window.location.href =
+                "crocodile.html";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CONTINUE SHOPPING
+    ========================================================= */
+
+    function continueShopping() {
+
+        window.location.href =
+            "crocodile.html";
+
+    }
+
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            loadCheckout();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

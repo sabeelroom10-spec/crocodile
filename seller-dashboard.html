@@ -1,0 +1,6364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Crocodile - Seller Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================================
+   CROCODILE SELLER DASHBOARD
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7f6;
+    color: #222;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 260px;
+    height: 100vh;
+
+    background: #123b27;
+    color: white;
+
+    z-index: 1100;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 4px 0 20px rgba(0,0,0,.08);
+}
+
+.sidebar-logo {
+    height: 80px;
+
+    padding: 0 25px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border-bottom: 1px solid rgba(255,255,255,.1);
+
+    color: #8ff0b4;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.seller-profile {
+    padding: 22px 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.profile-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e9f8ef;
+
+    color: #168b45;
+
+    border-radius: 50%;
+
+    font-size: 22px;
+}
+
+.profile-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info strong {
+    font-size: 14px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-info small {
+    margin-top: 3px;
+
+    color: #8ff0b4;
+
+    font-size: 11px;
+}
+
+.dashboard-nav {
+    flex: 1;
+
+    padding: 20px 12px;
+
+    overflow-y: auto;
+}
+
+.nav-item {
+    width: 100%;
+
+    margin-bottom: 5px;
+
+    padding: 12px 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: rgba(255,255,255,.72);
+
+    text-align: left;
+
+    font-size: 14px;
+
+    transition: .25s;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,.08);
+    color: white;
+}
+
+.nav-item.active {
+    background: #168b45;
+    color: white;
+}
+
+.nav-item span {
+    flex: 1;
+}
+
+.sidebar-bottom {
+    padding: 15px;
+
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+
+.buyer-link,
+.logout-btn {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    transition: .25s;
+}
+
+.buyer-link {
+    margin-bottom: 8px;
+
+    background: rgba(255,255,255,.08);
+
+    color: white;
+}
+
+.logout-btn {
+    border: 1px solid rgba(255,255,255,.15);
+
+    background: transparent;
+
+    color: #ffb5b5;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.dashboard-main {
+    min-height: 100vh;
+
+    margin-left: 260px;
+}
+
+.dashboard-header {
+    height: 80px;
+
+    padding: 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: white;
+
+    border-bottom: 1px solid #e7ebe9;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 900;
+}
+
+.header-title h1 {
+    font-size: 24px;
+}
+
+.header-title p {
+    color: #777;
+    font-size: 12px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.notification-btn {
+    position: relative;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #e1e5e3;
+
+    background: white;
+
+    border-radius: 50%;
+
+    font-size: 18px;
+}
+
+.notification-count {
+    position: absolute;
+
+    top: -3px;
+    right: -3px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e53935;
+
+    color: white;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.menu-btn {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    background: #f0f5f2;
+
+    border-radius: 8px;
+
+    font-size: 20px;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.dashboard-section {
+    display: none;
+    padding: 35px;
+}
+
+.dashboard-section.active-section {
+    display: block;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.welcome-card {
+    padding: 30px;
+
+    margin-bottom: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: linear-gradient(
+        135deg,
+        #123b27,
+        #168b45
+    );
+
+    color: white;
+
+    border-radius: 15px;
+}
+
+.welcome-card span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #8ff0b4;
+
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.welcome-card h2 {
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.welcome-card p {
+    color: rgba(255,255,255,.8);
+    font-size: 14px;
+}
+
+.welcome-icon {
+    font-size: 75px;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    background: white;
+
+    border: 1px solid #e6ebe8;
+
+    border-radius: 12px;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 23px;
+}
+
+.stat-icon.green {
+    background: #e9f8ef;
+}
+
+.stat-icon.orange {
+    background: #fff3df;
+}
+
+.stat-icon.blue {
+    background: #e8f3ff;
+}
+
+.stat-icon.purple {
+    background: #f2eaff;
+}
+
+.stat-card span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+.stat-card strong {
+    font-size: 21px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.dashboard-card {
+    margin-bottom: 25px;
+
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid #e6ebe8;
+
+    border-radius: 12px;
+}
+
+.card-header {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header h3 {
+    font-size: 18px;
+}
+
+.card-header p {
+    color: #777;
+    font-size: 12px;
+}
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.quick-actions {
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 15px;
+}
+
+.quick-actions button {
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 5px;
+
+    border: 1px solid #e4e9e6;
+
+    background: #fafcfb;
+
+    border-radius: 10px;
+
+    text-align: left;
+}
+
+.quick-actions button span {
+    font-size: 24px;
+}
+
+.quick-actions button strong {
+    font-size: 14px;
+}
+
+.quick-actions button small {
+    color: #777;
+    font-size: 11px;
+}
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.section-heading {
+    margin-bottom: 28px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.section-heading span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #168b45;
+
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.4px;
+}
+
+.section-heading h2 {
+    margin-bottom: 5px;
+
+    font-size: 28px;
+}
+
+.section-heading p {
+    color: #777;
+
+    font-size: 13px;
+}
+
+.primary-dashboard-btn {
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #168b45;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.seller-products-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 20px;
+}
+
+.seller-product-card {
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+}
+
+.seller-product-image {
+    width: 100%;
+    height: 190px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f0f3f1;
+
+    overflow: hidden;
+}
+
+.seller-product-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.seller-product-image .placeholder {
+    font-size: 55px;
+}
+
+.seller-product-info {
+    padding: 18px;
+}
+
+.seller-product-info h3 {
+    margin-bottom: 6px;
+    font-size: 17px;
+}
+
+.product-category {
+    color: #168b45;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    text-transform: uppercase;
+}
+
+.product-price {
+    margin: 10px 0;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.product-status-badge,
+.product-type-badge {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    margin-bottom: 8px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.product-type-badge {
+    background: #edf7f1;
+    color: #168b45;
+}
+
+.status-pending {
+    background: #fff3d9;
+    color: #946200;
+}
+
+.status-approved {
+    background: #e8f7ee;
+    color: #168b45;
+}
+
+.status-rejected {
+    background: #fdeaea;
+    color: #c62828;
+}
+
+.seller-product-actions {
+    margin-top: 15px;
+
+    display: flex;
+    gap: 8px;
+}
+
+.product-action-btn {
+    flex: 1;
+
+    padding: 9px;
+
+    border: 1px solid #dfe5e2;
+
+    background: white;
+
+    border-radius: 6px;
+
+    color: #444;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.product-form-card {
+    max-width: 900px;
+
+    padding: 30px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 13px;
+}
+
+.form-section-title {
+    margin-top: 25px;
+    margin-bottom: 20px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #e5e9e7;
+}
+
+.form-section-title:first-child {
+    margin-top: 0;
+}
+
+.form-section-title h3 {
+    color: #168b45;
+    font-size: 17px;
+}
+
+.form-section-title p {
+    margin-top: 4px;
+    color: #777;
+    font-size: 12px;
+}
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 18px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #333;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    padding: 12px 13px;
+
+    border: 1px solid #d7ddda;
+
+    background: white;
+
+    border-radius: 7px;
+
+    color: #222;
+
+    font-size: 13px;
+
+    outline: none;
+}
+
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.submit-product-btn {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    background: #168b45;
+
+    color: white;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-message {
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+.info-box {
+    padding: 13px;
+
+    margin-bottom: 18px;
+
+    background: #f0f8f3;
+
+    border-radius: 7px;
+
+    color: #25663e;
+
+    font-size: 12px;
+}
+
+.seller-product-terms {
+    margin: 20px 0;
+}
+
+.seller-product-terms label {
+    display: flex;
+    gap: 10px;
+
+    color: #666;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   ORDERS
+========================================================= */
+
+.order-filter {
+    margin-bottom: 25px;
+
+    padding: 5px;
+
+    display: inline-flex;
+
+    gap: 4px;
+
+    background: white;
+
+    border: 1px solid #e4e8e6;
+
+    border-radius: 9px;
+}
+
+.order-filter-btn {
+    padding: 9px 16px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #666;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.order-filter-btn.active {
+    background: #168b45;
+    color: white;
+}
+
+.orders-container {
+    display: grid;
+
+    gap: 15px;
+}
+
+.order-card {
+    padding: 20px;
+
+    display: grid;
+
+    grid-template-columns: 1fr auto auto;
+
+    align-items: center;
+
+    gap: 20px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+}
+
+.order-card h3 {
+    margin-bottom: 6px;
+}
+
+.order-card p {
+    color: #555;
+    font-size: 13px;
+}
+
+.order-card small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #888;
+
+    font-size: 11px;
+}
+
+.order-total {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.order-status {
+    display: inline-block;
+
+    margin-top: 6px;
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    background: #edf7f1;
+
+    color: #168b45;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    text-transform: capitalize;
+}
+
+.view-order-btn {
+    padding: 10px 14px;
+
+    border: none;
+
+    background: #168b45;
+
+    color: white;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.messages-layout {
+    display: grid;
+
+    grid-template-columns: 320px 1fr;
+
+    min-height: 550px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.conversation-list {
+    border-right: 1px solid #e3e8e5;
+
+    background: #fafcfb;
+}
+
+.conversation-header {
+    padding: 20px;
+
+    border-bottom: 1px solid #e3e8e5;
+}
+
+.conversation-header h3 {
+    font-size: 16px;
+}
+
+.conversation-items {
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+.conversation-item {
+    padding: 15px;
+
+    display: flex;
+
+    gap: 12px;
+
+    border-bottom: 1px solid #e8ecea;
+
+    cursor: pointer;
+}
+
+.conversation-item:hover,
+.conversation-item.active {
+    background: #edf7f1;
+}
+
+.conversation-avatar {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e1f4e8;
+
+    border-radius: 50%;
+}
+
+.conversation-info {
+    min-width: 0;
+}
+
+.conversation-info strong {
+    display: block;
+    font-size: 13px;
+}
+
+.conversation-info p {
+    margin-top: 4px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-info small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #999;
+
+    font-size: 9px;
+}
+
+.empty-conversation {
+    padding: 40px 20px;
+
+    text-align: center;
+
+    color: #999;
+
+    font-size: 13px;
+}
+
+.seller-chat-area {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-empty {
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #888;
+}
+
+.chat-empty > div {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.chat-empty h3 {
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.seller-chat-window {
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 17px 20px;
+
+    border-bottom: 1px solid #e3e8e5;
+}
+
+.chat-header strong {
+    display: block;
+}
+
+.chat-header small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #168b45;
+
+    font-size: 10px;
+}
+
+.chat-messages {
+    flex: 1;
+
+    min-height: 300px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+    background: #f8faf9;
+}
+
+.message {
+    max-width: 75%;
+
+    margin-bottom: 12px;
+
+    padding: 11px 14px;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.customer-message {
+    margin-right: auto;
+
+    background: white;
+
+    border: 1px solid #e1e7e3;
+}
+
+.seller-message {
+    margin-left: auto;
+
+    background: #168b45;
+
+    color: white;
+}
+
+.message-time {
+    display: block;
+
+    margin-top: 5px;
+
+    opacity: .65;
+
+    font-size: 9px;
+}
+
+.chat-security-warning {
+    padding: 9px 15px;
+
+    background: #fff8e8;
+
+    color: #806000;
+
+    border-top: 1px solid #f0e3bd;
+
+    border-bottom: 1px solid #f0e3bd;
+
+    font-size: 10px;
+}
+
+.chat-input-area {
+    padding: 12px;
+
+    display: flex;
+
+    gap: 8px;
+
+    border-top: 1px solid #e3e8e5;
+}
+
+.chat-input-area input {
+    flex: 1;
+
+    padding: 11px;
+
+    border: 1px solid #d6ddda;
+
+    border-radius: 8px;
+
+    outline: none;
+}
+
+.chat-input-area button {
+    width: 45px;
+
+    border: none;
+
+    background: #168b45;
+
+    color: white;
+
+    border-radius: 8px;
+}
+
+/* =========================================================
+   EARNINGS
+========================================================= */
+
+.earnings-summary {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.earning-card {
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+}
+
+.earning-card span {
+    display: block;
+
+    color: #777;
+
+    font-size: 12px;
+
+    margin-bottom: 8px;
+}
+
+.earning-card strong {
+    font-size: 25px;
+}
+
+.earning-card small {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #999;
+
+    font-size: 10px;
+}
+
+.commission-explanation {
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+}
+
+.commission-explanation h3 {
+    margin-bottom: 8px;
+}
+
+.commission-explanation p {
+    color: #777;
+
+    font-size: 13px;
+}
+
+.commission-example {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.commission-example div {
+    padding: 15px;
+
+    background: #f5f8f6;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+}
+
+.commission-example strong {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 17px;
+}
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+.notifications-container {
+    display: grid;
+
+    gap: 12px;
+}
+
+.notification-card {
+    padding: 18px;
+
+    display: flex;
+
+    gap: 15px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 10px;
+}
+
+.notification-card.unread {
+    border-left: 4px solid #168b45;
+}
+
+.notification-card strong {
+    display: block;
+
+    margin-bottom: 4px;
+}
+
+.notification-card p {
+    color: #666;
+
+    font-size: 12px;
+}
+
+.notification-card small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #999;
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settings-card {
+    max-width: 900px;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.settings-row {
+    padding: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #e8ecea;
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+}
+
+.settings-row p {
+    margin-top: 5px;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+.verified-badge,
+.security-status {
+    color: #168b45;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.commission-rate {
+    font-size: 20px;
+}
+
+.danger-btn {
+    padding: 9px 15px;
+
+    border: none;
+
+    background: #c62828;
+
+    color: white;
+
+    border-radius: 6px;
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.dashboard-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,.6);
+}
+
+.dashboard-modal.active {
+    display: flex;
+}
+
+.dashboard-modal-box {
+    width: 100%;
+
+    max-width: 700px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    position: relative;
+
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 14px;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 12px;
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+
+    background: #f0f3f1;
+
+    border-radius: 50%;
+
+    font-size: 22px;
+}
+
+.order-detail-title {
+    margin-bottom: 20px;
+}
+
+.order-detail-section {
+    margin-top: 20px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #e4e8e6;
+}
+
+.order-detail-section h3 {
+    margin-bottom: 12px;
+
+    color: #168b45;
+
+    font-size: 15px;
+}
+
+.detail-row {
+    padding: 7px 0;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    font-size: 13px;
+}
+
+.detail-row span:first-child {
+    color: #777;
+}
+
+.detail-total {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.order-product-image {
+    width: 150px;
+    height: 150px;
+
+    margin-bottom: 15px;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+
+    background: #f3f5f4;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    padding: 50px 20px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid #e3e8e5;
+
+    border-radius: 12px;
+}
+
+.empty-state > div {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.empty-state h3 {
+    margin-bottom: 5px;
+}
+
+.empty-state p {
+    color: #888;
+    font-size: 12px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 9000;
+
+    max-width: 350px;
+
+    padding: 14px 18px;
+
+    background: #123b27;
+
+    color: white;
+
+    border-radius: 8px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,.2);
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:1000px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .seller-products-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:800px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+
+        transition: .25s;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .dashboard-main {
+        margin-left: 0;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .dashboard-header {
+        padding: 0 15px;
+    }
+
+    .dashboard-section {
+        padding: 20px 15px;
+    }
+
+    .messages-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .conversation-list {
+        border-right: none;
+        border-bottom: 1px solid #e3e8e5;
+    }
+
+    .conversation-items {
+        max-height: 250px;
+    }
+
+    .order-card {
+        grid-template-columns: 1fr;
+    }
+
+    .earnings-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .commission-example {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .stats-grid,
+    .seller-products-grid,
+    .quick-actions,
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-card {
+        padding: 22px;
+    }
+
+    .welcome-icon {
+        display: none;
+    }
+
+    .section-heading h2 {
+        font-size: 22px;
+    }
+
+    .settings-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+        🐊
+        <span>CROCODILE</span>
+    </div>
+
+    <div class="seller-profile">
+
+        <div class="profile-icon">
+            👤
+        </div>
+
+        <div class="profile-info">
+
+            <strong id="sellerName">
+                Seller
+            </strong>
+
+            <small>
+                Verified Seller
+            </small>
+
+        </div>
+
+    </div>
+
+    <nav class="dashboard-nav">
+
+        <button
+            class="nav-item active"
+            onclick="showDashboardSection('overview',this)"
+        >
+            📊
+            <span>Overview</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('products',this)"
+        >
+            📦
+            <span>My Products</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('addProduct',this)"
+        >
+            ➕
+            <span>Add Product</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('orders',this)"
+        >
+            🛍️
+            <span>Orders</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('messages',this)"
+        >
+            💬
+            <span>Customer Messages</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('earnings',this)"
+        >
+            💰
+            <span>Earnings</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('notifications',this)"
+        >
+            🔔
+            <span>Notifications</span>
+        </button>
+
+        <button
+            class="nav-item"
+            onclick="showDashboardSection('settings',this)"
+        >
+            ⚙️
+            <span>Settings</span>
+        </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <a
+            href="crocodile.html"
+            class="buyer-link"
+        >
+            🛒 Buyer Website
+        </a>
+
+        <button
+            class="logout-btn"
+            onclick="sellerLogout()"
+        >
+            🚪 Logout
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="dashboard-main">
+
+<header class="dashboard-header">
+
+    <button
+        class="menu-btn"
+        onclick="toggleSidebar()"
+    >
+        ☰
+    </button>
+
+    <div class="header-title">
+
+        <h1>
+            Seller Dashboard
+        </h1>
+
+        <p>
+            Manage your Crocodile seller account
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <button
+            class="notification-btn"
+            onclick="showDashboardSection('notifications')"
+        >
+            🔔
+
+            <span
+                class="notification-count"
+                id="notificationCount"
+            >
+                0
+            </span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     OVERVIEW
+========================================================= -->
+
+<section
+    id="overview"
+    class="dashboard-section active-section"
+>
+
+    <div class="welcome-card">
+
+        <div>
+
+            <span>
+                SELLER CENTER
+            </span>
+
+            <h2>
+                Welcome, <span id="welcomeSellerName">Seller</span> 👋
+            </h2>
+
+            <p>
+                Manage your products, orders, customers and earnings.
+            </p>
+
+        </div>
+
+        <div class="welcome-icon">
+            🐊
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                📦
+            </div>
+
+            <div>
+
+                <span>
+                    Products
+                </span>
+
+                <strong id="totalProducts">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                🛍️
+            </div>
+
+            <div>
+
+                <span>
+                    Orders
+                </span>
+
+                <strong id="totalOrders">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                💬
+            </div>
+
+            <div>
+
+                <span>
+                    Messages
+                </span>
+
+                <strong id="totalMessages">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                💰
+            </div>
+
+            <div>
+
+                <span>
+                    Earnings
+                </span>
+
+                <strong id="dashboardEarnings">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Quick Actions
+                </h3>
+
+                <p>
+                    Quickly access common seller tasks.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="quick-actions">
+
+            <button
+                onclick="showDashboardSection('addProduct')"
+            >
+
+                <span>
+                    ➕
+                </span>
+
+                <strong>
+                    Add Product
+                </strong>
+
+                <small>
+                    List a new product
+                </small>
+
+            </button>
+
+
+            <button
+                onclick="showDashboardSection('orders')"
+            >
+
+                <span>
+                    🛍️
+                </span>
+
+                <strong>
+                    View Orders
+                </strong>
+
+                <small>
+                    Manage customer orders
+                </small>
+
+            </button>
+
+
+            <button
+                onclick="showDashboardSection('messages')"
+            >
+
+                <span>
+                    💬
+                </span>
+
+                <strong>
+                    Customer Messages
+                </strong>
+
+                <small>
+                    Chat with customers
+                </small>
+
+            </button>
+
+
+            <button
+                onclick="showDashboardSection('earnings')"
+            >
+
+                <span>
+                    💰
+                </span>
+
+                <strong>
+                    Earnings
+                </strong>
+
+                <small>
+                    View your sales
+                </small>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Recent Orders
+                </h3>
+
+                <p>
+                    Your latest customer orders.
+                </p>
+
+            </div>
+
+            <button
+                class="primary-dashboard-btn"
+                onclick="showDashboardSection('orders')"
+            >
+                View All
+            </button>
+
+        </div>
+
+
+        <div id="recentOrdersContainer">
+
+            <div class="empty-state">
+
+                <div>
+                    🛍️
+                </div>
+
+                <h3>
+                    No orders yet
+                </h3>
+
+                <p>
+                    Customer orders will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PRODUCTS
+========================================================= -->
+
+<section
+    id="products"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                PRODUCT MANAGEMENT
+            </span>
+
+            <h2>
+                My Products
+            </h2>
+
+            <p>
+                Manage your products and approval status.
+            </p>
+
+        </div>
+
+        <button
+            class="primary-dashboard-btn"
+            onclick="showDashboardSection('addProduct')"
+        >
+            + Add Product
+        </button>
+
+    </div>
+
+
+    <div class="seller-products-grid"
+         id="productsContainer">
+
+        <div class="empty-state">
+
+            <div>
+                📦
+            </div>
+
+            <h3>
+                No Products
+            </h3>
+
+            <p>
+                Add your first product.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ADD PRODUCT
+========================================================= -->
+
+<section
+    id="addProduct"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                PRODUCT MANAGEMENT
+            </span>
+
+            <h2>
+                Add Product
+            </h2>
+
+            <p>
+                Submit a product for admin approval.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="product-form-card">
+
+        <form
+            id="productForm"
+        >
+
+            <div class="form-section-title">
+
+                <h3>
+                    🛍️ Product Information
+                </h3>
+
+                <p>
+                    Enter the details of your product.
+                </p>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productName">
+                        Product Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        required
+                        placeholder="Enter product name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="productCategory">
+                        Category *
+                    </label>
+
+                    <select
+                        id="productCategory"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="electronics">
+                            Electronics
+                        </option>
+
+                        <option value="fashion">
+                            Fashion
+                        </option>
+
+                        <option value="home">
+                            Home
+                        </option>
+
+                        <option value="beauty">
+                            Beauty
+                        </option>
+
+                        <option value="sports">
+                            Sports
+                        </option>
+
+                        <option value="books">
+                            Books
+                        </option>
+
+                        <option value="other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="productDescription">
+                    Description *
+                </label>
+
+                <textarea
+                    id="productDescription"
+                    required
+                    placeholder="Describe your product"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productType">
+                        Product Type *
+                    </label>
+
+                    <select
+                        id="productType"
+                        required
+                        onchange="toggleDeliveryFields()"
+                    >
+
+                        <option value="">
+                            Select type
+                        </option>
+
+                        <option value="online">
+                            Online / Digital
+                        </option>
+
+                        <option value="offline">
+                            Offline / Physical
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="productPrice">
+                        Product Price (₹) *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        min="1"
+                        step="0.01"
+                        required
+                        placeholder="Enter price"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="productStock">
+                    Stock Quantity *
+                </label>
+
+                <input
+                    type="number"
+                    id="productStock"
+                    min="1"
+                    required
+                    placeholder="Enter stock"
+                >
+
+            </div>
+
+
+            <div class="form-section-title">
+
+                <h3>
+                    🖼️ Product Image
+                </h3>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="productImage">
+                    Product Image *
+                </label>
+
+                <input
+                    type="file"
+                    id="productImage"
+                    accept="image/*"
+                    required
+                >
+
+                <small>
+                    Maximum 5 MB.
+                </small>
+
+            </div>
+
+
+            <div
+                id="onlineDetails"
+                style="display:none"
+            >
+
+                <div class="form-section-title">
+
+                    <h3>
+                        💻 Online Delivery
+                    </h3>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="digitalDelivery">
+                        Delivery Method
+                    </label>
+
+                    <select id="digitalDelivery">
+
+                        <option value="">
+                            Select delivery method
+                        </option>
+
+                        <option value="email">
+                            Email Delivery
+                        </option>
+
+                        <option value="download">
+                            Download Link
+                        </option>
+
+                        <option value="account">
+                            Customer Account
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="offlineDetails"
+                style="display:none"
+            >
+
+                <div class="form-section-title">
+
+                    <h3>
+                        📦 Offline Delivery
+                    </h3>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="deliveryTime">
+                            Estimated Delivery
+                        </label>
+
+                        <select id="deliveryTime">
+
+                            <option value="">
+                                Select delivery time
+                            </option>
+
+                            <option value="1-3">
+                                1 - 3 Days
+                            </option>
+
+                            <option value="3-5">
+                                3 - 5 Days
+                            </option>
+
+                            <option value="5-7">
+                                5 - 7 Days
+                            </option>
+
+                            <option value="7-14">
+                                7 - 14 Days
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="shippingCharge">
+                            Shipping Charge (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="shippingCharge"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="seller-product-terms">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="productAgreement"
+                        required
+                    >
+
+                    <span>
+                        I confirm that the product information
+                        is accurate and I agree to Crocodile's
+                        seller rules.
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-product-btn"
+            >
+                📤 Submit Product For Approval
+            </button>
+
+
+            <p
+                id="productFormMessage"
+                class="form-message"
+            ></p>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ORDERS
+========================================================= -->
+
+<section
+    id="orders"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                ORDER MANAGEMENT
+            </span>
+
+            <h2>
+                Customer Orders
+            </h2>
+
+            <p>
+                Manage orders received from customers.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="order-filter">
+
+        <button
+            class="order-filter-btn active"
+            onclick="filterOrders('all',this)"
+        >
+            All
+        </button>
+
+        <button
+            class="order-filter-btn"
+            onclick="filterOrders('placed',this)"
+        >
+            Placed
+        </button>
+
+        <button
+            class="order-filter-btn"
+            onclick="filterOrders('processing',this)"
+        >
+            Processing
+        </button>
+
+        <button
+            class="order-filter-btn"
+            onclick="filterOrders('completed',this)"
+        >
+            Completed
+        </button>
+
+        <button
+            class="order-filter-btn"
+            onclick="filterOrders('cancelled',this)"
+        >
+            Cancelled
+        </button>
+
+    </div>
+
+
+    <div
+        class="orders-container"
+        id="ordersContainer"
+    ></div>
+
+</section>
+
+
+<!-- =========================================================
+     MESSAGES
+========================================================= -->
+
+<section
+    id="messages"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                CUSTOMER COMMUNICATION
+            </span>
+
+            <h2>
+                Customer Messages
+            </h2>
+
+            <p>
+                Communicate with customers about their orders.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="messages-layout">
+
+        <div class="conversation-list">
+
+            <div class="conversation-header">
+
+                <h3>
+                    Conversations
+                </h3>
+
+            </div>
+
+
+            <div
+                id="conversationList"
+                class="conversation-items"
+            >
+
+                <div class="empty-conversation">
+
+                    💬
+
+                    <p>
+                        No conversations yet.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="seller-chat-area">
+
+            <div
+                id="sellerChatEmpty"
+                class="chat-empty"
+            >
+
+                <div>
+                    💬
+                </div>
+
+                <h3>
+                    Select a conversation
+                </h3>
+
+                <p>
+                    Customer messages will appear here.
+                </p>
+
+            </div>
+
+
+            <div
+                id="sellerChatWindow"
+                class="seller-chat-window"
+                style="display:none"
+            >
+
+                <div class="chat-header">
+
+                    <strong id="chatCustomerName">
+                        Customer
+                    </strong>
+
+                    <small>
+                        Crocodile Secure Chat
+                    </small>
+
+                </div>
+
+
+                <div
+                    id="sellerChatMessages"
+                    class="chat-messages"
+                ></div>
+
+
+                <div class="chat-security-warning">
+
+                    🔐 Do not share phone numbers,
+                    email addresses, passwords,
+                    OTPs, card details or external
+                    payment information.
+
+                </div>
+
+
+                <form
+                    id="sellerChatForm"
+                    class="chat-input-area"
+                >
+
+                    <input
+                        type="text"
+                        id="sellerChatInput"
+                        placeholder="Type your message..."
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button type="submit">
+                        ➤
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     EARNINGS
+========================================================= -->
+
+<section
+    id="earnings"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                FINANCIAL OVERVIEW
+            </span>
+
+            <h2>
+                Earnings
+            </h2>
+
+            <p>
+                Track your sales and Crocodile commission.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="earnings-summary">
+
+        <div class="earning-card">
+
+            <span>
+                Gross Sales
+            </span>
+
+            <strong id="grossSales">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="earning-card">
+
+            <span>
+                Crocodile Commission
+            </span>
+
+            <strong id="commissionAmount">
+                ₹0
+            </strong>
+
+            <small>
+                10% of successful sales
+            </small>
+
+        </div>
+
+
+        <div class="earning-card">
+
+            <span>
+                Your Earnings
+            </span>
+
+            <strong id="netEarnings">
+                ₹0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Earnings History
+                </h3>
+
+                <p>
+                    Successful sales and commission details.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div id="earningsTable"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================= -->
+
+<section
+    id="notifications"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                NOTIFICATIONS
+            </span>
+
+            <h2>
+                Notifications
+            </h2>
+
+            <p>
+                Stay updated about your seller account.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="notificationsContainer"
+        class="notifications-container"
+    ></div>
+
+</section>
+
+
+<!-- =========================================================
+     SETTINGS
+========================================================= -->
+
+<section
+    id="settings"
+    class="dashboard-section"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <span>
+                ACCOUNT SETTINGS
+            </span>
+
+            <h2>
+                Settings
+            </h2>
+
+            <p>
+                Manage your seller account.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-card">
+
+        <div class="settings-row">
+
+            <div>
+
+                <strong>
+                    Seller Account
+                </strong>
+
+                <p id="settingsEmail">
+                    seller@example.com
+                </p>
+
+            </div>
+
+            <span class="verified-badge">
+                ✓ Verified
+            </span>
+
+        </div>
+
+
+        <div class="settings-row">
+
+            <div>
+
+                <strong>
+                    Seller Commission
+                </strong>
+
+                <p>
+                    Crocodile commission rate
+                </p>
+
+            </div>
+
+            <strong class="commission-rate">
+                10%
+            </strong>
+
+        </div>
+
+
+        <div class="settings-row">
+
+            <div>
+
+                <strong>
+                    Account Security
+                </strong>
+
+                <p>
+                    Your account is protected by Crocodile.
+                </p>
+
+            </div>
+
+            <span class="security-status">
+                🔐 Protected
+            </span>
+
+        </div>
+
+
+        <div class="settings-row">
+
+            <div>
+
+                <strong>
+                    Logout
+                </strong>
+
+                <p>
+                    Sign out from your seller dashboard.
+                </p>
+
+            </div>
+
+            <button
+                class="danger-btn"
+                onclick="sellerLogout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     ORDER DETAILS MODAL
+========================================================= -->
+
+<div
+    class="dashboard-modal"
+    id="orderDetailsModal"
+>
+
+    <div class="dashboard-modal-box">
+
+        <button
+            class="modal-close"
+            onclick="closeOrderModal()"
+        >
+            ×
+        </button>
+
+        <div id="orderDetailsContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PRODUCT DETAILS MODAL
+========================================================= -->
+
+<div
+    class="dashboard-modal"
+    id="productDetailsModal"
+>
+
+    <div class="dashboard-modal-box">
+
+        <button
+            class="modal-close"
+            onclick="closeProductModal()"
+        >
+            ×
+        </button>
+
+        <div id="productDetailsContent"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "https://kczfbgqdsvlaghjhtevs.supabase.co";
+
+/*
+   IMPORTANT:
+   Put the same Supabase anon/publishable key that you
+   already use in your Crocodile project here.
+*/
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjemZiZ3Fkc3ZsYWdoamh0ZXZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzc0MDksImV4cCI6MjEwNTgxMzQwOX0.zVcum-8MAy69fqNjKzLOTP7VCFYTOapMzH_uktJrKII";
+
+const crocodileSupabase =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+window.crocodileSupabase =
+    crocodileSupabase;
+
+
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
+const COMMISSION_RATE = 0.10;
+
+let sellerProducts = [];
+
+let sellerOrders = [];
+
+let sellerNotifications = [];
+
+let sellerMessages = [];
+
+let currentProductFilter = "all";
+
+let currentOrderFilter = "all";
+
+let selectedConversationBuyerId = null;
+
+let currentSellerUser = null;
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+        try {
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await crocodileSupabase
+                    .auth
+                    .getSession();
+
+            if (!session) {
+
+                window.location.href =
+                    "seller-login.html";
+
+                return;
+            }
+
+            currentSellerUser =
+                session.user;
+
+            await loadSellerProfile();
+
+            await loadDashboard();
+
+            await loadSellerMessages();
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard initialization error:",
+                error
+            );
+
+            showToast(
+                "❌ " + error.message,
+                "error"
+            );
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SELLER PROFILE
+========================================================= */
+
+async function loadSellerProfile() {
+
+    const {
+        data: seller,
+        error
+    } =
+        await crocodileSupabase
+            .from("sellers")
+            .select(
+                "id,first_name,last_name,email,shop_name,status"
+            )
+            .eq(
+                "id",
+                currentSellerUser.id
+            )
+            .maybeSingle();
+
+    if (error) {
+
+        console.warn(
+            "Seller profile error:",
+            error.message
+        );
+
+    }
+
+    const firstName =
+        seller?.first_name || "";
+
+    const lastName =
+        seller?.last_name || "";
+
+    const sellerName =
+        (
+            firstName +
+            " " +
+            lastName
+        ).trim() ||
+        sessionStorage.getItem(
+            "crocodileSellerName"
+        ) ||
+        "Seller";
+
+    const email =
+        seller?.email ||
+        currentSellerUser.email ||
+        "";
+
+    document.getElementById(
+        "sellerName"
+    ).textContent = sellerName;
+
+    document.getElementById(
+        "welcomeSellerName"
+    ).textContent = sellerName;
+
+    document.getElementById(
+        "settingsEmail"
+    ).textContent = email;
+
+}
+
+
+/* =========================================================
+   LOAD DASHBOARD
+========================================================= */
+
+async function loadDashboard() {
+
+    try {
+
+        if (!currentSellerUser) {
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await crocodileSupabase
+                    .auth
+                    .getUser();
+
+            currentSellerUser =
+                user;
+        }
+
+        if (!currentSellerUser) {
+
+            window.location.href =
+                "seller-login.html";
+
+            return;
+        }
+
+
+        /* PRODUCTS */
+
+        const {
+            data: products,
+            error: productError
+        } =
+            await crocodileSupabase
+                .from("products")
+                .select("*")
+                .eq(
+                    "seller_id",
+                    currentSellerUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (productError) {
+            throw productError;
+        }
+
+        sellerProducts =
+            products || [];
+
+
+        /* ORDERS */
+
+        const {
+            data: orders,
+            error: orderError
+        } =
+            await crocodileSupabase
+                .from("orders")
+                .select("*")
+                .eq(
+                    "seller_id",
+                    currentSellerUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (orderError) {
+            throw orderError;
+        }
+
+        sellerOrders =
+            orders || [];
+
+
+        /* NOTIFICATIONS */
+
+        const {
+            data: notifications,
+            error: notificationError
+        } =
+            await crocodileSupabase
+                .from("notifications")
+                .select("*")
+                .eq(
+                    "user_id",
+                    currentSellerUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (notificationError) {
+
+            console.warn(
+                "Notifications:",
+                notificationError.message
+            );
+
+        }
+
+        sellerNotifications =
+            notifications || [];
+
+
+        renderProducts();
+
+        renderOrders();
+
+        renderNotifications();
+
+        updateDashboardStats();
+
+        loadRecentOrders();
+
+        renderEarnings();
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard load error:",
+            error
+        );
+
+        showToast(
+            "❌ " + error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DASHBOARD NAVIGATION
+========================================================= */
+
+function showDashboardSection(
+    sectionId,
+    button = null
+) {
+
+    document
+        .querySelectorAll(
+            ".dashboard-section"
+        )
+        .forEach(section => {
+
+            section.classList.remove(
+                "active-section"
+            );
+
+        });
+
+
+    const target =
+        document.getElementById(
+            sectionId
+        );
+
+    if (target) {
+
+        target.classList.add(
+            "active-section"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(
+            ".nav-item"
+        )
+        .forEach(item => {
+
+            item.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    } else {
+
+        document
+            .querySelectorAll(
+                ".nav-item"
+            )
+            .forEach(item => {
+
+                if (
+                    item.getAttribute(
+                        "onclick"
+                    )?.includes(
+                        "'" +
+                        sectionId +
+                        "'"
+                    )
+                ) {
+
+                    item.classList.add(
+                        "active"
+                    );
+
+                }
+
+            });
+
+    }
+
+
+    document
+        .getElementById(
+            "sidebar"
+        )
+        ?.classList.remove(
+            "open"
+        );
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+function toggleSidebar() {
+
+    document
+        .getElementById(
+            "sidebar"
+        )
+        ?.classList.toggle(
+            "open"
+        );
+
+}
+
+function closeSidebar() {
+
+    document
+        .getElementById(
+            "sidebar"
+        )
+        ?.classList.remove(
+            "open"
+        );
+
+}
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+function renderProducts() {
+
+    const container =
+        document.getElementById(
+            "productsContainer"
+        );
+
+    if (!container) return;
+
+
+    if (
+        sellerProducts.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>
+                    📦
+                </div>
+
+                <h3>
+                    No Products
+                </h3>
+
+                <p>
+                    Add your first product.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        sellerProducts.map(
+            product => {
+
+                const status =
+                    product.approval_status ||
+                    product.status ||
+                    "pending";
+
+                const image =
+                    product.image ||
+                    product.image_url ||
+                    "";
+
+                return `
+
+                    <div class="seller-product-card">
+
+                        <div class="seller-product-image">
+
+                            ${
+                                image
+                                ?
+                                `
+                                    <img
+                                        src="${escapeHTML(image)}"
+                                        alt="${escapeHTML(
+                                            product.name ||
+                                            "Product"
+                                        )}"
+                                    >
+                                `
+                                :
+                                `
+                                    <div class="placeholder">
+                                        📦
+                                    </div>
+                                `
+                            }
+
+                        </div>
+
+
+                        <div class="seller-product-info">
+
+                            <span class="product-category">
+
+                                ${escapeHTML(
+                                    product.category ||
+                                    "Other"
+                                )}
+
+                            </span>
+
+
+                            <h3>
+
+                                ${escapeHTML(
+                                    product.name ||
+                                    "Product"
+                                )}
+
+                            </h3>
+
+
+                            <div class="product-price">
+
+                                ₹${Number(
+                                    product.price || 0
+                                ).toLocaleString("en-IN")}
+
+                            </div>
+
+
+                            <span class="product-type-badge">
+
+                                ${escapeHTML(
+                                    product.product_type ||
+                                    "Product"
+                                )}
+
+                            </span>
+
+
+                            <span class="
+                                product-status-badge
+                                status-${escapeHTML(status)}
+                            ">
+
+                                ${escapeHTML(
+                                    capitalize(status)
+                                )}
+
+                            </span>
+
+
+                            <div class="seller-product-actions">
+
+                                <button
+                                    class="product-action-btn"
+                                    onclick="openProductDetails('${product.id}')"
+                                >
+                                    View Details
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   PRODUCT DETAILS
+========================================================= */
+
+function openProductDetails(
+    productId
+) {
+
+    const product =
+        sellerProducts.find(
+            item =>
+                String(item.id) ===
+                String(productId)
+        );
+
+    if (!product) return;
+
+
+    const content =
+        document.getElementById(
+            "productDetailsContent"
+        );
+
+    const modal =
+        document.getElementById(
+            "productDetailsModal"
+        );
+
+    const image =
+        product.image ||
+        product.image_url ||
+        "";
+
+
+    content.innerHTML = `
+
+        <h2>
+            📦 Product Details
+        </h2>
+
+
+        ${
+            image
+            ?
+            `
+                <img
+                    class="order-product-image"
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(
+                        product.name || "Product"
+                    )}"
+                >
+            `
+            :
+            ""
+        }
+
+
+        <div class="order-detail-section">
+
+            <div class="detail-row">
+
+                <span>
+                    Product Name
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        product.name || "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Category
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        product.category || "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Price
+                </span>
+
+                <strong>
+                    ₹${Number(
+                        product.price || 0
+                    ).toLocaleString("en-IN")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Stock
+                </span>
+
+                <strong>
+                    ${Number(
+                        product.stock || 0
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Approval
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        product.approval_status ||
+                        "pending"
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-section">
+
+            <h3>
+                Description
+            </h3>
+
+            <p>
+                ${escapeHTML(
+                    product.description ||
+                    "No description."
+                )}
+            </p>
+
+        </div>
+
+    `;
+
+
+    modal.classList.add(
+        "active"
+    );
+
+}
+
+
+function closeProductModal() {
+
+    document
+        .getElementById(
+            "productDetailsModal"
+        )
+        ?.classList.remove(
+            "active"
+        );
+
+}
+
+
+/* =========================================================
+   ORDER FILTER
+========================================================= */
+
+function filterOrders(
+    status,
+    button
+) {
+
+    currentOrderFilter =
+        status;
+
+    document
+        .querySelectorAll(
+            ".order-filter-btn"
+        )
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+    if (button) {
+        button.classList.add(
+            "active"
+        );
+    }
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   RENDER ORDERS
+========================================================= */
+
+function renderOrders() {
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+    if (!container) return;
+
+
+    let orders =
+        [...sellerOrders];
+
+
+    if (
+        currentOrderFilter !==
+        "all"
+    ) {
+
+        orders =
+            orders.filter(
+                order =>
+                    String(
+                        order.order_status ||
+                        ""
+                    ).toLowerCase() ===
+                    String(
+                        currentOrderFilter
+                    ).toLowerCase()
+            );
+
+    }
+
+
+    if (orders.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>
+                    🛍️
+                </div>
+
+                <h3>
+                    No Orders
+                </h3>
+
+                <p>
+                    Customer orders will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        orders.map(
+            order => {
+
+                const total =
+                    Number(
+                        order.total_amount ||
+                        0
+                    );
+
+                const status =
+                    order.order_status ||
+                    "placed";
+
+
+                return `
+
+                    <div class="order-card">
+
+                        <div>
+
+                            <h3>
+
+                                ${escapeHTML(
+                                    order.product_name ||
+                                    "Product"
+                                )}
+
+                            </h3>
+
+                            <p>
+
+                                Order ID:
+                                ${escapeHTML(
+                                    order.id
+                                )}
+
+                            </p>
+
+                            <small>
+
+                                Customer:
+                                ${escapeHTML(
+                                    order.customer_name ||
+                                    "Customer"
+                                )}
+
+                            </small>
+
+                            <small>
+
+                                ${formatDateTime(
+                                    order.created_at
+                                )}
+
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="order-total">
+
+                                ₹${total.toLocaleString(
+                                    "en-IN"
+                                )}
+
+                            </div>
+
+                            <span class="order-status">
+
+                                ${escapeHTML(
+                                    capitalize(status)
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            class="view-order-btn"
+                            onclick="openOrderDetails('${order.id}')"
+                        >
+                            View Details
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   ORDER DETAILS
+========================================================= */
+
+function openOrderDetails(
+    orderId
+) {
+
+    const order =
+        sellerOrders.find(
+            item =>
+                String(item.id) ===
+                String(orderId)
+        );
+
+    if (!order) {
+
+        showToast(
+            "Order not found.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const content =
+        document.getElementById(
+            "orderDetailsContent"
+        );
+
+    const modal =
+        document.getElementById(
+            "orderDetailsModal"
+        );
+
+
+    const productPrice =
+        Number(
+            order.product_price || 0
+        );
+
+    const quantity =
+        Number(
+            order.quantity || 0
+        );
+
+    const subtotal =
+        Number(
+            order.subtotal || 0
+        );
+
+    const deliveryFee =
+        Number(
+            order.delivery_fee || 0
+        );
+
+    const total =
+        Number(
+            order.total_amount || 0
+        );
+
+    const commission =
+        total *
+        COMMISSION_RATE;
+
+    const sellerAmount =
+        total -
+        commission;
+
+
+    const productImage =
+        order.product_image ||
+        "";
+
+
+    content.innerHTML = `
+
+        <h2 class="order-detail-title">
+            📦 Order Details
+        </h2>
+
+
+        <div class="order-detail-section">
+
+            <div class="detail-row">
+
+                <span>
+                    Order ID
+                </span>
+
+                <strong>
+                    ${escapeHTML(order.id)}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Created
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        formatDateTime(
+                            order.created_at
+                        )
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-section">
+
+            <h3>
+                🛍️ Product Information
+            </h3>
+
+
+            ${
+                productImage
+                ?
+                `
+                    <img
+                        class="order-product-image"
+                        src="${escapeHTML(productImage)}"
+                        alt="${escapeHTML(
+                            order.product_name ||
+                            "Product"
+                        )}"
+                    >
+                `
+                :
+                ""
+            }
+
+
+            <div class="detail-row">
+
+                <span>
+                    Product
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.product_name ||
+                        "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Quantity
+                </span>
+
+                <strong>
+                    ${quantity}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Product Price
+                </span>
+
+                <strong>
+                    ₹${productPrice.toLocaleString(
+                        "en-IN"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ₹${subtotal.toLocaleString(
+                        "en-IN"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Delivery Fee
+                </span>
+
+                <strong>
+                    ₹${deliveryFee.toLocaleString(
+                        "en-IN"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row detail-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ₹${total.toLocaleString(
+                        "en-IN"
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-section">
+
+            <h3>
+                👤 Customer Information
+            </h3>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.customer_name ||
+                        "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.customer_phone ||
+                        "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Address
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.customer_address ||
+                        "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-section">
+
+            <h3>
+                💳 Payment Information
+            </h3>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Payment Method
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.payment_method ||
+                        "N/A"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Payment Status
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.payment_status ||
+                        "pending"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Payment Reference
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        order.payment_reference ||
+                        "Not provided"
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-section">
+
+            <h3>
+                📦 Order Status
+            </h3>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Status
+                </span>
+
+                <strong>
+                    ${escapeHTML(
+                        capitalize(
+                            order.order_status ||
+                            "placed"
+                        )
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-section">
+
+            <h3>
+                💰 Seller Earnings
+            </h3>
+
+
+            <div class="detail-row">
+
+                <span>
+                    Crocodile Commission (10%)
+                </span>
+
+                <strong>
+                    ₹${commission.toLocaleString(
+                        "en-IN"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row detail-total">
+
+                <span>
+                    Seller Amount
+                </span>
+
+                <strong>
+                    ₹${sellerAmount.toLocaleString(
+                        "en-IN"
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    modal.classList.add(
+        "active"
+    );
+
+}
+
+
+function closeOrderModal() {
+
+    document
+        .getElementById(
+            "orderDetailsModal"
+        )
+        ?.classList.remove(
+            "active"
+        );
+
+}
+
+
+/* =========================================================
+   RECENT ORDERS
+========================================================= */
+
+function loadRecentOrders() {
+
+    const container =
+        document.getElementById(
+            "recentOrdersContainer"
+        );
+
+    if (!container) return;
+
+
+    const orders =
+        sellerOrders.slice(
+            0,
+            5
+        );
+
+
+    if (orders.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>
+                    🛍️
+                </div>
+
+                <h3>
+                    No orders yet
+                </h3>
+
+                <p>
+                    Customer orders will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        orders.map(
+            order => `
+
+                <div
+                    class="order-card"
+                    style="
+                        grid-template-columns:1fr auto;
+                    "
+                >
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(
+                                order.product_name ||
+                                "Product"
+                            )}
+                        </strong>
+
+                        <small>
+
+                            Order:
+                            ${escapeHTML(
+                                order.id
+                            )}
+
+                        </small>
+
+                    </div>
+
+                    <strong>
+
+                        ₹${Number(
+                            order.total_amount ||
+                            0
+                        ).toLocaleString(
+                            "en-IN"
+                        )}
+
+                    </strong>
+
+                </div>
+
+            `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   DASHBOARD STATS
+========================================================= */
+
+function updateDashboardStats() {
+
+    document.getElementById(
+        "totalProducts"
+    ).textContent =
+        sellerProducts.length;
+
+
+    document.getElementById(
+        "totalOrders"
+    ).textContent =
+        sellerOrders.length;
+
+
+    const successfulOrders =
+        sellerOrders.filter(
+            order => {
+
+                const status =
+                    String(
+                        order.order_status ||
+                        ""
+                    ).toLowerCase();
+
+                return (
+                    status === "completed" ||
+                    status === "delivered"
+                );
+
+            }
+        );
+
+
+    const grossSales =
+        successfulOrders.reduce(
+            (
+                total,
+                order
+            ) =>
+                total +
+                Number(
+                    order.total_amount ||
+                    0
+                ),
+            0
+        );
+
+
+    document.getElementById(
+        "dashboardEarnings"
+    ).textContent =
+        "₹" +
+        (
+            grossSales *
+            (1 - COMMISSION_RATE)
+        ).toLocaleString(
+            "en-IN"
+        );
+
+}
+
+
+/* =========================================================
+   PART 2 STARTS BELOW
+========================================================= */
+
+</script>
+<script>
+
+/* =========================================================
+   CUSTOMER MESSAGES
+========================================================= */
+
+async function loadSellerMessages() {
+
+    try {
+
+        if (!currentSellerUser) {
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await crocodileSupabase
+                    .auth
+                    .getUser();
+
+            currentSellerUser =
+                user;
+        }
+
+
+        if (!currentSellerUser) return;
+
+
+        const {
+            data,
+            error
+        } =
+            await crocodileSupabase
+                .from("seller_messages")
+                .select("*")
+                .eq(
+                    "seller_id",
+                    currentSellerUser.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Seller messages load error:",
+                error
+            );
+
+            showToast(
+                "❌ Could not load messages: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        sellerMessages =
+            data || [];
+
+
+        document.getElementById(
+            "totalMessages"
+        ).textContent =
+            sellerMessages.length;
+
+
+        renderConversations();
+
+    } catch (error) {
+
+        console.error(
+            "Message loading error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CONVERSATIONS
+========================================================= */
+
+function renderConversations() {
+
+    const container =
+        document.getElementById(
+            "conversationList"
+        );
+
+    if (!container) return;
+
+
+    if (
+        sellerMessages.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-conversation">
+
+                💬
+
+                <p>
+                    No conversations yet.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    const conversations = {};
+
+
+    sellerMessages.forEach(
+        message => {
+
+            const buyerId =
+                message.buyer_id;
+
+            if (!buyerId) return;
+
+
+            if (
+                !conversations[buyerId]
+            ) {
+
+                conversations[buyerId] = [];
+
+            }
+
+
+            conversations[buyerId]
+                .push(message);
+
+        }
+    );
+
+
+    const conversationEntries =
+        Object.entries(
+            conversations
+        );
+
+
+    container.innerHTML =
+        conversationEntries
+            .map(
+                (
+                    [
+                        buyerId,
+                        messages
+                    ]
+                ) => {
+
+                    const latest =
+                        messages[
+                            messages.length - 1
+                        ];
+
+
+                    const preview =
+                        String(
+                            latest.message ||
+                            ""
+                        )
+                        .replace(
+                            /\s+/g,
+                            " "
+                        )
+                        .slice(
+                            0,
+                            70
+                        );
+
+
+                    return `
+
+                        <div
+                            class="
+                                conversation-item
+                                ${
+                                    String(
+                                        selectedConversationBuyerId
+                                    ) ===
+                                    String(
+                                        buyerId
+                                    )
+                                    ? "active"
+                                    : ""
+                                }
+                            "
+                            onclick="openConversation('${escapeAttribute(buyerId)}')"
+                        >
+
+                            <div class="conversation-avatar">
+                                👤
+                            </div>
+
+
+                            <div class="conversation-info">
+
+                                <strong>
+                                    Customer
+                                </strong>
+
+                                <p>
+                                    ${escapeHTML(
+                                        preview
+                                    )}
+                                </p>
+
+                                <small>
+                                    ${escapeHTML(
+                                        formatDateTime(
+                                            latest.created_at
+                                        )
+                                    )}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   OPEN CONVERSATION
+========================================================= */
+
+function openConversation(
+    buyerId
+) {
+
+    selectedConversationBuyerId =
+        buyerId;
+
+
+    const empty =
+        document.getElementById(
+            "sellerChatEmpty"
+        );
+
+    const windowBox =
+        document.getElementById(
+            "sellerChatWindow"
+        );
+
+    const name =
+        document.getElementById(
+            "chatCustomerName"
+        );
+
+
+    if (empty) {
+
+        empty.style.display =
+            "none";
+
+    }
+
+
+    if (windowBox) {
+
+        windowBox.style.display =
+            "flex";
+
+    }
+
+
+    if (name) {
+
+        name.textContent =
+            "Customer";
+
+    }
+
+
+    renderConversationMessages();
+
+    renderConversations();
+
+}
+
+
+/* =========================================================
+   RENDER CHAT MESSAGES
+========================================================= */
+
+function renderConversationMessages() {
+
+    const container =
+        document.getElementById(
+            "sellerChatMessages"
+        );
+
+    if (!container) return;
+
+
+    if (
+        !selectedConversationBuyerId
+    ) {
+
+        container.innerHTML = "";
+
+        return;
+    }
+
+
+    const messages =
+        sellerMessages.filter(
+            message =>
+                String(
+                    message.buyer_id
+                ) ===
+                String(
+                    selectedConversationBuyerId
+                )
+        );
+
+
+    if (messages.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-conversation">
+
+                No messages.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+       IMPORTANT:
+       seller_messages in the current project
+       uses seller_id + buyer_id + message.
+       Therefore we display the loaded rows as
+       customer-side messages unless the row was
+       just created by the current seller session.
+
+       New seller replies are marked locally as
+       seller messages during this session.
+    */
+
+    container.innerHTML =
+        messages.map(
+            message => {
+
+                const sellerMessage =
+                    message._sender ===
+                    "seller";
+
+
+                return `
+
+                    <div class="
+                        message
+                        ${
+                            sellerMessage
+                            ? "seller-message"
+                            : "customer-message"
+                        }
+                    ">
+
+                        <div>
+                            ${escapeHTML(
+                                message.message ||
+                                ""
+                            ).replace(
+                                /\n/g,
+                                "<br>"
+                            )}
+                        </div>
+
+                        <span class="message-time">
+
+                            ${escapeHTML(
+                                formatDateTime(
+                                    message.created_at
+                                )
+                            )}
+
+                        </span>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+
+    container.scrollTop =
+        container.scrollHeight;
+
+}
+
+
+/* =========================================================
+   SECURITY CHECK
+========================================================= */
+
+function checkSellerMessageSecurity(
+    message
+) {
+
+    const text =
+        String(
+            message || ""
+        );
+
+
+    const blockedPatterns = [
+
+        /\b\d{10}\b/,
+
+        /\b\d{3}[-.\s]\d{3}[-.\s]\d{4}\b/,
+
+        /\b\d{4,6}\b/,
+
+        /\b(?:otp|one time password)\b/i,
+
+        /\b(?:password|passwd|pwd)\b/i,
+
+        /\b(?:upi|upi id|gpay|google pay|phonepe|paytm)\b/i,
+
+        /\b(?:card number|cvv|debit card|credit card)\b/i,
+
+        /\b(?:whatsapp|telegram|instagram|facebook|snapchat)\b/i,
+
+        /https?:\/\//i,
+
+        /www\./i,
+
+        /\b[\w.+-]+@[\w-]+\.[\w.-]+\b/
+
+    ];
+
+
+    return blockedPatterns.some(
+        pattern =>
+            pattern.test(text)
+    );
+
+}
+
+
+/* =========================================================
+   SELLER SEND MESSAGE
+========================================================= */
+
+async function sendSellerMessage(
+    event
+) {
+
+    if (event) {
+
+        event.preventDefault();
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "sellerChatInput"
+        );
+
+    if (!input) return;
+
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) return;
+
+
+    if (
+        !selectedConversationBuyerId
+    ) {
+
+        showToast(
+            "Please select a customer.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (
+        checkSellerMessageSecurity(
+            message
+        )
+    ) {
+
+        showToast(
+            "⚠️ Message contains blocked information.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        if (!currentSellerUser) {
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await crocodileSupabase
+                    .auth
+                    .getUser();
+
+            currentSellerUser =
+                user;
+        }
+
+
+        if (!currentSellerUser) {
+
+            showToast(
+                "Seller session expired.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await crocodileSupabase
+                .from("seller_messages")
+                .insert({
+
+                    seller_id:
+                        currentSellerUser.id,
+
+                    buyer_id:
+                        selectedConversationBuyerId,
+
+                    message:
+                        message
+
+                })
+                .select()
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "Seller message insert error:",
+                error
+            );
+
+            showToast(
+                "❌ Message could not be sent: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        /*
+           Mark this row locally as seller-side
+           so it appears on the right.
+        */
+
+        data._sender =
+            "seller";
+
+
+        sellerMessages.push(
+            data
+        );
+
+
+        input.value = "";
+
+
+        renderConversationMessages();
+
+        renderConversations();
+
+
+        showToast(
+            "✓ Message sent.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Send seller message error:",
+            error
+        );
+
+        showToast(
+            "❌ " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CHAT FORM
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "sellerChatForm"
+            );
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                sendSellerMessage
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   EARNINGS
+========================================================= */
+
+function renderEarnings() {
+
+    const successfulOrders =
+        sellerOrders.filter(
+            order => {
+
+                const status =
+                    String(
+                        order.order_status ||
+                        ""
+                    ).toLowerCase();
+
+                return (
+                    status === "completed" ||
+                    status === "delivered"
+                );
+
+            }
+        );
+
+
+    const grossSales =
+        successfulOrders.reduce(
+            (
+                total,
+                order
+            ) =>
+                total +
+                Number(
+                    order.total_amount ||
+                    0
+                ),
+            0
+        );
+
+
+    const commission =
+        grossSales *
+        COMMISSION_RATE;
+
+
+    const net =
+        grossSales -
+        commission;
+
+
+    document.getElementById(
+        "grossSales"
+    ).textContent =
+        "₹" +
+        grossSales.toLocaleString(
+            "en-IN"
+        );
+
+
+    document.getElementById(
+        "commissionAmount"
+    ).textContent =
+        "₹" +
+        commission.toLocaleString(
+            "en-IN"
+        );
+
+
+    document.getElementById(
+        "netEarnings"
+    ).textContent =
+        "₹" +
+        net.toLocaleString(
+            "en-IN"
+        );
+
+
+    const table =
+        document.getElementById(
+            "earningsTable"
+        );
+
+
+    if (!table) return;
+
+
+    if (
+        successfulOrders.length === 0
+    ) {
+
+        table.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>
+                    💰
+                </div>
+
+                <h3>
+                    No earnings yet
+                </h3>
+
+                <p>
+                    Completed sales will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML =
+        successfulOrders.map(
+            order => {
+
+                const amount =
+                    Number(
+                        order.total_amount ||
+                        0
+                    );
+
+                const sellerAmount =
+                    amount *
+                    (1 - COMMISSION_RATE);
+
+
+                return `
+
+                    <div
+                        class="order-card"
+                        style="
+                            grid-template-columns:1fr auto;
+                        "
+                    >
+
+                        <div>
+
+                            <strong>
+                                ${escapeHTML(
+                                    order.product_name ||
+                                    "Product"
+                                )}
+                            </strong>
+
+                            <small>
+
+                                Order:
+                                ${escapeHTML(
+                                    order.id
+                                )}
+
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+
+                                ₹${sellerAmount.toLocaleString(
+                                    "en-IN"
+                                )}
+
+                            </strong>
+
+                            <small>
+
+                                Sale:
+                                ₹${amount.toLocaleString(
+                                    "en-IN"
+                                )}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function renderNotifications() {
+
+    const container =
+        document.getElementById(
+            "notificationsContainer"
+        );
+
+    if (!container) return;
+
+
+    const unread =
+        sellerNotifications.filter(
+            notification =>
+                !notification.is_read
+        ).length;
+
+
+    const count =
+        document.getElementById(
+            "notificationCount"
+        );
+
+
+    if (count) {
+
+        count.textContent =
+            unread;
+
+    }
+
+
+    if (
+        sellerNotifications.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>
+                    🔔
+                </div>
+
+                <h3>
+                    No notifications
+                </h3>
+
+                <p>
+                    New updates will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        sellerNotifications.map(
+            notification => `
+
+                <div class="
+                    notification-card
+                    ${
+                        notification.is_read
+                        ? ""
+                        : "unread"
+                    }
+                ">
+
+                    <div>
+                        🔔
+                    </div>
+
+                    <div>
+
+                        <strong>
+
+                            ${escapeHTML(
+                                notification.title ||
+                                "Notification"
+                            )}
+
+                        </strong>
+
+                        <p>
+
+                            ${escapeHTML(
+                                notification.message ||
+                                ""
+                            )}
+
+                        </p>
+
+                        <small>
+
+                            ${escapeHTML(
+                                formatDateTime(
+                                    notification.created_at
+                                )
+                            )}
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   PRODUCT FORM
+========================================================= */
+
+function toggleDeliveryFields() {
+
+    const type =
+        document.getElementById(
+            "productType"
+        )?.value;
+
+
+    const online =
+        document.getElementById(
+            "onlineDetails"
+        );
+
+    const offline =
+        document.getElementById(
+            "offlineDetails"
+        );
+
+
+    if (online) {
+
+        online.style.display =
+            type === "online"
+            ? "block"
+            : "none";
+
+    }
+
+
+    if (offline) {
+
+        offline.style.display =
+            type === "offline"
+            ? "block"
+            : "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   ADD PRODUCT
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "productForm"
+            );
+
+
+        if (!form) return;
+
+
+        form.addEventListener(
+            "submit",
+            submitProduct
+        );
+
+    }
+);
+
+
+async function submitProduct(
+    event
+) {
+
+    event.preventDefault();
+
+
+    const message =
+        document.getElementById(
+            "productFormMessage"
+        );
+
+
+    try {
+
+        if (!currentSellerUser) {
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await crocodileSupabase
+                    .auth
+                    .getUser();
+
+            currentSellerUser =
+                user;
+
+        }
+
+
+        if (!currentSellerUser) {
+
+            throw new Error(
+                "Seller session expired."
+            );
+
+        }
+
+
+        const name =
+            document.getElementById(
+                "productName"
+            ).value.trim();
+
+
+        const category =
+            document.getElementById(
+                "productCategory"
+            ).value;
+
+
+        const description =
+            document.getElementById(
+                "productDescription"
+            ).value.trim();
+
+
+        const type =
+            document.getElementById(
+                "productType"
+            ).value;
+
+
+        const price =
+            Number(
+                document.getElementById(
+                    "productPrice"
+                ).value
+            );
+
+
+        const stock =
+            Number(
+                document.getElementById(
+                    "productStock"
+                ).value
+            );
+
+
+        const imageInput =
+            document.getElementById(
+                "productImage"
+            );
+
+
+        const file =
+            imageInput.files[0];
+
+
+        if (!file) {
+
+            throw new Error(
+                "Please select a product image."
+            );
+
+        }
+
+
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
+
+            throw new Error(
+                "Image must be smaller than 5 MB."
+            );
+
+        }
+
+
+        message.textContent =
+            "Uploading product...";
+
+
+        /*
+           Upload to Supabase Storage.
+
+           Change "product-images" if your
+           existing storage bucket has another name.
+        */
+
+        const fileName =
+            currentSellerUser.id +
+            "/" +
+            Date.now() +
+            "-" +
+            file.name.replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            );
+
+
+        const {
+            error:
+                uploadError
+        } =
+            await crocodileSupabase
+                .storage
+                .from(
+                    "product-images"
+                )
+                .upload(
+                    fileName,
+                    file
+                );
+
+
+        if (uploadError) {
+
+            throw uploadError;
+
+        }
+
+
+        const {
+            data:
+                publicUrl
+        } =
+            crocodileSupabase
+                .storage
+                .from(
+                    "product-images"
+                )
+                .getPublicUrl(
+                    fileName
+                );
+
+
+        const onlineDeliveryMethod =
+            type === "online"
+            ?
+            document.getElementById(
+                "digitalDelivery"
+            ).value || null
+            :
+            null;
+
+
+        const offlineDeliveryTime =
+            type === "offline"
+            ?
+            document.getElementById(
+                "deliveryTime"
+            ).value || null
+            :
+            null;
+
+
+        const shippingCharge =
+            type === "offline"
+            ?
+            Number(
+                document.getElementById(
+                    "shippingCharge"
+                ).value ||
+                0
+            )
+            :
+            0;
+
+
+        const {
+            data,
+            error
+        } =
+            await crocodileSupabase
+                .from("products")
+                .insert({
+
+                    seller_id:
+                        currentSellerUser.id,
+
+                    name:
+                        name,
+
+                    category:
+                        category,
+
+                    description:
+                        description,
+
+                    product_type:
+                        type,
+
+                    price:
+                        price,
+
+                    stock:
+                        stock,
+
+                    image:
+                        publicUrl.publicUrl,
+
+                    online_delivery_method:
+                        onlineDeliveryMethod,
+
+                    offline_delivery_time:
+                        offlineDeliveryTime,
+
+                    shipping_charge:
+                        shippingCharge,
+
+                    approval_status:
+                        "pending"
+
+                })
+                .select()
+                .single();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        message.textContent =
+            "✓ Product submitted for admin approval.";
+
+        message.style.color =
+            "#168b45";
+
+
+        document
+            .getElementById(
+                "productForm"
+            )
+            .reset();
+
+
+        toggleDeliveryFields();
+
+
+        await loadDashboard();
+
+
+        showToast(
+            "✓ Product submitted successfully.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Product submission error:",
+            error
+        );
+
+
+        message.textContent =
+            "❌ " +
+            error.message;
+
+
+        message.style.color =
+            "#c62828";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function sellerLogout() {
+
+    try {
+
+        await crocodileSupabase
+            .auth
+            .signOut();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+    }
+
+
+    sessionStorage.removeItem(
+        "crocodileSellerName"
+    );
+
+    sessionStorage.removeItem(
+        "crocodileSellerEmail"
+    );
+
+    sessionStorage.removeItem(
+        "crocodileSellerId"
+    );
+
+
+    window.location.href =
+        "seller-login.html";
+
+}
+
+
+/* =========================================================
+   UTILITY
+========================================================= */
+
+function escapeHTML(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+function escapeAttribute(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    );
+
+}
+
+
+function capitalize(
+    value
+) {
+
+    if (!value) return "";
+
+    const text =
+        String(value);
+
+    return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+    );
+
+}
+
+
+function formatDateTime(
+    value
+) {
+
+    if (!value) {
+        return "N/A";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "N/A";
+
+    }
+
+
+    return date.toLocaleString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+function showToast(
+    message,
+    type = "info"
+) {
+
+    const old =
+        document.querySelector(
+            ".toast"
+        );
+
+    if (old) {
+        old.remove();
+    }
+
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+    toast.className =
+        "toast";
+
+
+    toast.textContent =
+        message;
+
+
+    if (
+        type === "error"
+    ) {
+
+        toast.style.background =
+            "#c62828";
+
+    }
+
+
+    if (
+        type === "success"
+    ) {
+
+        toast.style.background =
+            "#168b45";
+
+    }
+
+
+    document.body.appendChild(
+        toast
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.remove();
+
+        },
+        3500
+    );
+
+}
+
+
+/* =========================================================
+   MODAL CLICK OUTSIDE
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target.classList.contains(
+                "dashboard-modal"
+            )
+        ) {
+
+            event.target.classList.remove(
+                "active"
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

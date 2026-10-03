@@ -1,0 +1,4142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crocodile - Shop With Confidence</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7f6;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 55px;
+            object-fit: contain;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .logo-section h1 {
+            font-size: 25px;
+            color: #168b45;
+        }
+
+        .logo-section p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #168b45;
+        }
+
+        .button {
+            padding: 9px 15px;
+            border: 1px solid #168b45;
+            border-radius: 6px;
+            color: #168b45 !important;
+        }
+
+        .button:hover {
+            background: #168b45;
+            color: white !important;
+        }
+
+        /* =========================
+           CART BUTTON
+        ========================= */
+
+        .cart-btn {
+            border: none;
+            background: #168b45;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .cart-btn:hover {
+            background: #116c36;
+        }
+
+        #cartCount {
+            background: white;
+            color: #168b45;
+            border-radius: 50%;
+            padding: 2px 6px;
+            margin-left: 4px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+
+            background:
+                linear-gradient(
+                    rgba(10, 70, 35, 0.88),
+                    rgba(10, 70, 35, 0.88)
+                ),
+                url("crocodile.jpeg");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 750px;
+            color: white;
+        }
+
+        .hero-content h2 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero-content h3 {
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .primary-btn {
+            border: none;
+            background: #168b45;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary-btn:hover {
+            background: #116c36;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-section {
+            width: 100%;
+            padding: 30px 5%;
+            background: #f5f7f6;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 750px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            width: 100%;
+            height: 50px;
+            padding: 0 18px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            color: #222;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #168b45;
+        }
+
+        .search-box input::placeholder {
+            color: #777;
+        }
+
+        .search-btn {
+            height: 50px;
+            padding: 0 22px;
+            border: none;
+            border-radius: 10px;
+            background: #168b45;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #116c36;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           GENERAL SECTIONS
+        ========================= */
+
+        .section {
+            padding: 60px 5%;
+        }
+
+        .section > h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 35px;
+        }
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .category-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .category-container button {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .category-container button:hover,
+        .category-container button.active {
+            background: #168b45;
+            color: white;
+            border-color: #168b45;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.13);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            background: #eee;
+            display: block;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #168b45;
+            margin-bottom: 12px;
+        }
+
+        .product-type {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 5px;
+            background: #eef7f1;
+            color: #168b45;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .product-actions button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            min-width: 0;
+        }
+
+        .buy-btn {
+            background: #168b45;
+            color: white;
+        }
+
+        .cart-product-btn {
+            background: #f1f1f1;
+            color: #222;
+        }
+
+        .bargain-product-btn {
+            background: #fff3cd;
+            color: #664d03;
+        }
+
+        .buy-btn:hover {
+            background: #116c36;
+        }
+
+        .cart-product-btn:hover {
+            background: #ddd;
+        }
+
+        .bargain-product-btn:hover {
+            background: #ffe69c;
+        }
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about-section {
+            background: white;
+            padding: 70px 5%;
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .about-section > p {
+            max-width: 800px;
+            margin: auto;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 45px auto 0;
+        }
+
+        .features div {
+            padding: 30px 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .features div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .features h3 {
+            margin: 12px 0;
+            font-size: 18px;
+        }
+
+        .features p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #10251a;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer h2 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #bbb;
+            margin: 7px;
+        }
+
+        /* =========================
+           TERMS OVERLAY
+        ========================= */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 20px;
+        }
+
+        .terms-box {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .terms-box h2 {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .terms-box > p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .terms-content {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .terms-content h3 {
+            margin-top: 15px;
+            margin-bottom: 7px;
+        }
+
+        .terms-content p,
+        .terms-content li {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .terms-content ul {
+            padding-left: 20px;
+        }
+
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .terms-check input {
+            margin-top: 4px;
+        }
+
+        .terms-box button {
+            border: none;
+            background: #168b45;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .terms-box button:hover:not(:disabled) {
+            background: #116c36;
+        }
+
+        .terms-box button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 5000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            border: none;
+            background: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           CART
+        ========================= */
+
+        #cartModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .cart-box {
+            width: 95%;
+            max-width: 750px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            color: #222;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+            position: relative;
+        }
+
+        .cart-box h2 {
+            color: #168b45;
+            margin-bottom: 20px;
+        }
+
+        .cart-box .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            background: #168b45;
+            color: white;
+            font-size: 20px;
+        }
+
+        .cart-box .close-btn:hover {
+            background: #116c36;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item h4 {
+            margin-bottom: 4px;
+        }
+
+        .cart-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .remove-cart {
+            border: none;
+            background: #dc3545;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .remove-cart:hover {
+            background: #b52a37;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* =========================
+           CHAT
+        ========================= */
+
+        .chat-button {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background: #168b45;
+            color: white;
+            font-size: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 4000;
+            transition: 0.3s;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.08);
+        }
+
+        .chat-box {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            height: 600px;
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .security-note {
+            background: #fff8df;
+            border: 1px solid #f0df9a;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bot-message,
+        .user-message {
+            max-width: 80%;
+            padding: 10px 13px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            background: #eef7f1;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: #168b45;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .chat-input input:focus {
+            border-color: #168b45;
+        }
+
+        .chat-input button {
+            border: none;
+            background: #168b45;
+            color: white;
+            padding: 0 16px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           NO PRODUCTS
+        ========================= */
+
+        .no-products {
+            width: 100%;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .no-products-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .no-products h2 {
+            margin-bottom: 10px;
+        }
+
+        .no-products p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading-box {
+            width: 100%;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-box .loading-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .hero-content h2 {
+                font-size: 38px;
+            }
+
+            .hero-content h3 {
+                font-size: 21px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 12px;
+            }
+
+            .logo-section h1 {
+                font-size: 21px;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .hero {
+                min-height: 450px;
+            }
+
+            .hero-content h2 {
+                font-size: 32px;
+            }
+
+            .hero-content h3 {
+                font-size: 19px;
+            }
+
+            .hero-content p {
+                font-size: 15px;
+            }
+
+            .section {
+                padding: 45px 5%;
+            }
+
+            .section > h2 {
+                font-size: 25px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box input,
+            .search-btn {
+                width: 100%;
+            }
+
+            .chat-box {
+                height: 90vh;
+            }
+
+            .terms-box {
+                padding: 25px;
+            }
+
+            .product-actions {
+                flex-direction: column;
+            }
+
+            .cart-item {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="navbar">
+
+        <div class="logo-section">
+
+            <img
+                src="crocodile.jpeg"
+                alt="Crocodile Logo"
+                class="logo"
+            >
+
+            <div>
+                <h1>CROCODILE</h1>
+                <p>Shop With Confidence</p>
+            </div>
+
+        </div>
+
+        <nav>
+
+            <a href="#home">Home</a>
+
+            <a href="#products">Products</a>
+
+            <a href="#categories">Categories</a>
+
+            <a href="#about">About</a>
+
+            <a href="seller.html" class="button">
+                Seller
+            </a>
+
+            <a href="admin-login.html" class="button">
+                Admin
+            </a>
+
+            <button
+                type="button"
+                class="cart-btn"
+                id="openCartButton"
+            >
+                🛒 Cart
+                <span id="cartCount">0</span>
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         TERMS
+    ========================= -->
+
+    <div
+        id="termsOverlay"
+        class="overlay"
+    >
+
+        <div class="terms-box">
+
+            <h2>🐊 Welcome to Crocodile</h2>
+
+            <p>
+                A platform designed with customer
+                safety and privacy in mind.
+            </p>
+
+            <div class="terms-content">
+
+                <h3>Before you continue</h3>
+
+                <p>
+                    Please read and agree to our
+                    basic Terms & Conditions.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Your privacy is important to us.
+                    </li>
+
+                    <li>
+                        Never share OTP, passwords
+                        or card details in chat.
+                    </li>
+
+                    <li>
+                        Payments should be completed
+                        only through Crocodile.
+                    </li>
+
+                    <li>
+                        Products are reviewed before approval.
+                    </li>
+
+                    <li>
+                        Online and Offline products
+                        follow different delivery processes.
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <label class="terms-check">
+
+                <input
+                    type="checkbox"
+                    id="termsCheckbox"
+                >
+
+                <span>
+                    I agree to the Crocodile
+                    Terms & Conditions and
+                    Privacy Policy.
+                </span>
+
+            </label>
+
+            <button
+                type="button"
+                id="continueBtn"
+                disabled
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         HOME
+    ========================= -->
+
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <h2>
+                Welcome to Crocodile 🐊
+            </h2>
+
+            <h3>
+                Find Products.
+                Talk to Sellers.
+                Get the Best Deal.
+            </h3>
+
+            <p>
+                Browse products, communicate
+                with sellers, bargain safely
+                and purchase with confidence.
+            </p>
+
+            <button
+                type="button"
+                id="startShoppingButton"
+                class="primary-btn"
+            >
+                Start Shopping
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SEARCH
+    ========================= -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search products..."
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                class="search-btn"
+                id="searchButton"
+            >
+                🔍 Search
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CATEGORIES
+    ========================= -->
+
+    <section
+        id="categories"
+        class="section"
+    >
+
+        <h2>
+            Shop by Category
+        </h2>
+
+        <div class="category-container">
+
+            <button
+                type="button"
+                data-category="all"
+            >
+                🛍️ All
+            </button>
+
+            <button
+                type="button"
+                data-category="electronics"
+            >
+                📱 Electronics
+            </button>
+
+            <button
+                type="button"
+                data-category="fashion"
+            >
+                👕 Fashion
+            </button>
+
+            <button
+                type="button"
+                data-category="home"
+            >
+                🏠 Home
+            </button>
+
+            <button
+                type="button"
+                data-category="books"
+            >
+                📚 Books
+            </button>
+
+            <button
+                type="button"
+                data-category="other"
+            >
+                📦 Other
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PRODUCTS
+    ========================= -->
+
+    <section
+        id="products"
+        class="section"
+    >
+
+        <h2>
+            Featured Products
+        </h2>
+
+        <div
+            id="productContainer"
+            class="product-grid"
+        >
+
+            <div class="loading-box">
+
+                <div class="loading-icon">
+                    🐊
+                </div>
+
+                <h2>
+                    Loading Products...
+                </h2>
+
+                <p>
+                    Please wait while we load the latest products.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CART
+    ========================= -->
+
+    <div
+        id="cartModal"
+        class="modal"
+    >
+
+        <div class="cart-box">
+
+            <button
+                type="button"
+                class="close-btn"
+                id="closeCartButton"
+            >
+                ✕
+            </button>
+
+            <h2>
+                🛒 Your Cart
+            </h2>
+
+            <div id="cartItems"></div>
+
+            <div class="cart-total">
+
+                <span>
+                    Total:
+                </span>
+
+                <span>
+                    ₹<span id="cartTotal">0</span>
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                id="checkoutButton"
+                class="primary-btn checkout-btn"
+            >
+                🛍️ Checkout Page
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         CHAT BUTTON
+    ========================= -->
+
+    <button
+        type="button"
+        class="chat-button"
+        id="openChatButton"
+    >
+        💬
+    </button>
+
+
+    <!-- =========================
+         CHAT
+    ========================= -->
+
+    <div
+        id="chatModal"
+        class="modal"
+    >
+
+        <div class="chat-box">
+
+            <button
+                type="button"
+                class="close-btn"
+                id="closeChatButton"
+            >
+                ✕
+            </button>
+
+            <h2>
+                💬 Crocodile Chat
+            </h2>
+
+            <p class="security-note">
+                🛡️ For your safety, never share
+                phone numbers, OTPs, passwords,
+                card details or external payment
+                information.
+            </p>
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+                <div class="bot-message">
+                    Hello! How can I help you?
+                </div>
+
+            </div>
+
+            <div class="chat-input">
+
+                <input
+                    type="text"
+                    id="chatInput"
+                    placeholder="Type your message..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="sendMessageButton"
+                >
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ABOUT
+    ========================= -->
+
+    <section
+        id="about"
+        class="about-section"
+    >
+
+        <h2>
+            About Crocodile
+        </h2>
+
+        <p>
+            Crocodile is an e-commerce platform
+            designed to connect buyers and sellers
+            while providing secure communication,
+            seller verification, product approval
+            and safe payment processing.
+        </p>
+
+        <div class="features">
+
+            <div>
+
+                🛡️
+
+                <h3>
+                    Customer Safety
+                </h3>
+
+                <p>
+                    Security-focused shopping experience.
+                </p>
+
+            </div>
+
+            <div>
+
+                🤝
+
+                <h3>
+                    Safe Bargaining
+                </h3>
+
+                <p>
+                    Communicate and negotiate with sellers.
+                </p>
+
+            </div>
+
+            <div>
+
+                ✅
+
+                <h3>
+                    Seller Verification
+                </h3>
+
+                <p>
+                    Products require approval before selling.
+                </p>
+
+            </div>
+
+            <div>
+
+                💳
+
+                <h3>
+                    Secure Payments
+                </h3>
+
+                <p>
+                    Payment verification before order completion.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <h2>
+            🐊 CROCODILE
+        </h2>
+
+        <p>
+            Shop With Confidence.
+        </p>
+
+        <p>
+            © 2026 Crocodile. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- =========================
+         SUPABASE
+    ========================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://kczfbgqdsvlaghjhtevs.supabase.co";
+
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjemZiZ3Fkc3ZsYWdoamh0ZXZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzc0MDksImV4cCI6MjEwNTgxMzQwOX0.zVcum-8MAy69fqNjKzLOTP7VCFYTOapMzH_uktJrKII";
+
+        let supabaseClient = null;
+
+        if (window.supabase) {
+
+            supabaseClient =
+                window.supabase.createClient(
+                    SUPABASE_URL,
+                    SUPABASE_ANON_KEY
+                );
+
+        }
+
+        window.crocodileSupabase =
+            supabaseClient;
+
+    </script>
+
+
+    <script>
+
+        /* =====================================================
+           CROCODILE BUYER APPLICATION
+        ===================================================== */
+
+        let products = [];
+
+        let cart = [];
+
+        let supabaseProductsLoaded = false;
+
+
+        /* =====================================================
+           UUID CHECK
+        ===================================================== */
+
+        function isValidUUID(value) {
+
+            if (!value) {
+                return false;
+            }
+
+            return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                .test(String(value));
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =====================================================
+           LOAD CART
+        ===================================================== */
+
+        function loadCart() {
+
+            try {
+
+                const savedCart =
+                    localStorage.getItem(
+                        "crocodileCart"
+                    );
+
+                if (!savedCart) {
+
+                    cart = [];
+
+                    return;
+
+                }
+
+                const parsed =
+                    JSON.parse(savedCart);
+
+                cart =
+                    Array.isArray(parsed)
+                        ? parsed
+                        : [];
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Cart loading error:",
+                    error
+                );
+
+                cart = [];
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SAVE CART
+        ===================================================== */
+
+        function saveCart() {
+
+            try {
+
+                localStorage.setItem(
+                    "crocodileCart",
+                    JSON.stringify(cart)
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Could not save cart:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TERMS
+        ===================================================== */
+
+        function enableContinue() {
+
+            const checkbox =
+                document.getElementById(
+                    "termsCheckbox"
+                );
+
+            const continueBtn =
+                document.getElementById(
+                    "continueBtn"
+                );
+
+            if (!checkbox || !continueBtn) {
+                return;
+            }
+
+            continueBtn.disabled =
+                !checkbox.checked;
+
+        }
+
+
+        function acceptTerms() {
+
+            const checkbox =
+                document.getElementById(
+                    "termsCheckbox"
+                );
+
+            const overlay =
+                document.getElementById(
+                    "termsOverlay"
+                );
+
+            if (!checkbox || !overlay) {
+                return;
+            }
+
+            if (!checkbox.checked) {
+                return;
+            }
+
+            overlay.style.display =
+                "none";
+
+            localStorage.setItem(
+                "crocodileTermsAccepted",
+                "true"
+            );
+
+        }
+
+
+        /* =====================================================
+           LOAD SUPABASE PRODUCTS
+        ===================================================== */
+
+        async function loadSupabaseProducts() {
+
+            const container =
+                document.getElementById(
+                    "productContainer"
+                );
+
+            if (!window.crocodileSupabase) {
+
+                console.error(
+                    "Supabase is not available."
+                );
+
+                if (container) {
+
+                    container.innerHTML = `
+
+                        <div class="no-products">
+
+                            <div class="no-products-icon">
+                                ⚠️
+                            </div>
+
+                            <h2>
+                                Unable to Connect
+                            </h2>
+
+                            <p>
+                                Please check your internet
+                                connection and Supabase configuration.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+                return;
+
+            }
+
+
+            try {
+
+                const result =
+                    await window.crocodileSupabase
+                        .from("products")
+                        .select(
+                            "id,name,description,price,category,product_type,image,stock,seller_id"
+                        )
+                        .eq(
+                            "approval_status",
+                            "approved"
+                        )
+                        .gt(
+                            "stock",
+                            0
+                        )
+                        .order(
+                            "created_at",
+                            {
+                                ascending: false
+                            }
+                        );
+
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+
+                const data =
+                    Array.isArray(result.data)
+                        ? result.data
+                        : [];
+
+
+                products =
+                    data.map(function (p) {
+
+                        return {
+
+                            /*
+                             * VERY IMPORTANT:
+                             * Keep the real Supabase UUID.
+                             */
+                            id:
+                                String(p.id),
+
+                            name:
+                                p.name ||
+                                "Product",
+
+                            description:
+                                p.description ||
+                                "",
+
+                            price:
+                                Number(p.price) || 0,
+
+                            category:
+                                p.category ||
+                                "other",
+
+                            type:
+                                p.product_type ||
+                                "offline",
+
+                            image:
+                                p.image ||
+                                "https://via.placeholder.com/500x350?text=Crocodile+Product",
+
+                            stock:
+                                Number(p.stock) || 0,
+
+                            seller_id:
+                                p.seller_id || null
+
+                        };
+
+                    });
+
+
+                supabaseProductsLoaded =
+                    true;
+
+
+                /*
+                 * =================================================
+                 * CLEAN OLD CART
+                 * =================================================
+                 *
+                 * Old version could have:
+                 *
+                 * id: 1
+                 * id: 2
+                 * id: 3
+                 *
+                 * Those are not UUIDs.
+                 *
+                 * We remove invalid products from the old cart.
+                 */
+
+                cleanOldCart();
+
+
+                displayProducts(
+                    products
+                );
+
+
+                updateCartCount();
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Supabase product load error:",
+                    error
+                );
+
+                supabaseProductsLoaded =
+                    false;
+
+
+                if (container) {
+
+                    container.innerHTML = `
+
+                        <div class="no-products">
+
+                            <div class="no-products-icon">
+                                ⚠️
+                            </div>
+
+                            <h2>
+                                Products Could Not Be Loaded
+                            </h2>
+
+                            <p>
+                                ${escapeHtml(
+                                    error.message ||
+                                    "Supabase error"
+                                )}
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CLEAN OLD CART
+        ===================================================== */
+
+        function cleanOldCart() {
+
+            if (!Array.isArray(cart)) {
+
+                cart = [];
+
+                saveCart();
+
+                return;
+
+            }
+
+
+            const validProducts =
+                new Map();
+
+
+            products.forEach(
+                function(product) {
+
+                    validProducts.set(
+                        String(product.id),
+                        product
+                    );
+
+                }
+            );
+
+
+            const cleanedCart = [];
+
+
+            cart.forEach(
+                function(item) {
+
+                    if (!item) {
+                        return;
+                    }
+
+
+                    const oldId =
+                        item.product_id ||
+                        item.productId ||
+                        item.id;
+
+
+                    if (!oldId) {
+                        return;
+                    }
+
+
+                    const product =
+                        validProducts.get(
+                            String(oldId)
+                        );
+
+
+                    /*
+                     * If old cart ID is not found,
+                     * remove it.
+                     */
+                    if (!product) {
+                        return;
+                    }
+
+
+                    /*
+                     * Store the actual Supabase UUID.
+                     */
+                    cleanedCart.push({
+
+                        ...product,
+
+                        id:
+                            String(product.id),
+
+                        product_id:
+                            String(product.id),
+
+                        quantity:
+                            Math.max(
+                                1,
+                                Number(
+                                    item.quantity
+                                ) || 1
+                            )
+
+                    });
+
+                }
+            );
+
+
+            cart =
+                cleanedCart;
+
+
+            saveCart();
+
+        }
+
+
+        /* =====================================================
+           DISPLAY PRODUCTS
+        ===================================================== */
+
+        function displayProducts(
+            productList = products
+        ) {
+
+            const container =
+                document.getElementById(
+                    "productContainer"
+                );
+
+            if (!container) {
+                return;
+            }
+
+
+            container.innerHTML = "";
+
+
+            if (
+                !Array.isArray(productList) ||
+                productList.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div class="no-products">
+
+                        <div class="no-products-icon">
+                            🐊
+                        </div>
+
+                        <h2>
+                            No Products Found
+                        </h2>
+
+                        <p>
+                            There are currently no approved
+                            products available.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            productList.forEach(
+                function(product) {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+                    card.className =
+                        "product-card";
+
+
+                    /* IMAGE */
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+                    image.className =
+                        "product-image";
+
+                    image.src =
+                        product.image ||
+                        "https://via.placeholder.com/500x350?text=Crocodile+Product";
+
+                    image.alt =
+                        product.name ||
+                        "Product";
+
+
+                    image.onerror =
+                        function() {
+
+                            this.src =
+                                "https://via.placeholder.com/500x350?text=Crocodile+Product";
+
+                        };
+
+
+                    /* INFO */
+
+                    const info =
+                        document.createElement(
+                            "div"
+                        );
+
+                    info.className =
+                        "product-info";
+
+
+                    /* NAME */
+
+                    const name =
+                        document.createElement(
+                            "h3"
+                        );
+
+                    name.textContent =
+                        product.name ||
+                        "Product";
+
+
+                    /* DESCRIPTION */
+
+                    const description =
+                        document.createElement(
+                            "p"
+                        );
+
+                    description.className =
+                        "product-description";
+
+                    description.textContent =
+                        product.description ||
+                        "";
+
+
+                    /* TYPE */
+
+                    const type =
+                        document.createElement(
+                            "span"
+                        );
+
+                    type.className =
+                        "product-type";
+
+                    type.textContent =
+                        product.type === "online"
+                            ? "🌐 Online Product"
+                            : "📦 Offline Product";
+
+
+                    /* PRICE */
+
+                    const price =
+                        document.createElement(
+                            "h3"
+                        );
+
+                    price.className =
+                        "product-price";
+
+                    price.textContent =
+                        "₹" +
+                        Number(
+                            product.price || 0
+                        ).toLocaleString(
+                            "en-IN"
+                        );
+
+
+                    /* ACTIONS */
+
+                    const actions =
+                        document.createElement(
+                            "div"
+                        );
+
+                    actions.className =
+                        "product-actions";
+
+
+                    /* BUY */
+
+                    const buyButton =
+                        document.createElement(
+                            "button"
+                        );
+
+                    buyButton.type =
+                        "button";
+
+                    buyButton.className =
+                        "buy-btn";
+
+                    buyButton.textContent =
+                        "Buy Now";
+
+
+                    buyButton.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            buyProduct(
+                                product.id
+                            );
+
+                        }
+                    );
+
+
+                    /* CART */
+
+                    const cartButton =
+                        document.createElement(
+                            "button"
+                        );
+
+                    cartButton.type =
+                        "button";
+
+                    cartButton.className =
+                        "cart-product-btn";
+
+                    cartButton.textContent =
+                        "🛒 Cart";
+
+
+                    cartButton.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            addToCart(
+                                product.id
+                            );
+
+                        }
+                    );
+
+
+                    /* BARGAIN */
+
+                    const bargainButton =
+                        document.createElement(
+                            "button"
+                        );
+
+                    bargainButton.type =
+                        "button";
+
+                    bargainButton.className =
+                        "bargain-product-btn";
+
+                    bargainButton.textContent =
+                        "💬 Bargain";
+
+
+                    bargainButton.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            bargainProduct(
+                                product.id
+                            );
+
+                        }
+                    );
+
+
+                    actions.appendChild(
+                        buyButton
+                    );
+
+                    actions.appendChild(
+                        cartButton
+                    );
+
+                    actions.appendChild(
+                        bargainButton
+                    );
+
+
+                    info.appendChild(
+                        name
+                    );
+
+                    info.appendChild(
+                        description
+                    );
+
+                    info.appendChild(
+                        type
+                    );
+
+                    info.appendChild(
+                        price
+                    );
+
+                    info.appendChild(
+                        actions
+                    );
+
+
+                    card.appendChild(
+                        image
+                    );
+
+                    card.appendChild(
+                        info
+                    );
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           BUY PRODUCT
+        ===================================================== */
+
+        function buyProduct(productId) {
+
+            if (!supabaseProductsLoaded) {
+
+                alert(
+                    "⏳ Products are still loading. Please try again."
+                );
+
+                return;
+
+            }
+
+
+            const product =
+                products.find(
+                    function(p) {
+
+                        return String(p.id) ===
+                            String(productId);
+
+                    }
+                );
+
+
+            if (!product) {
+
+                alert(
+                    "❌ Product not found."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Product ID MUST be UUID.
+             */
+
+            if (!isValidUUID(product.id)) {
+
+                alert(
+                    "❌ This product has an invalid database ID. " +
+                    "Please refresh the page."
+                );
+
+                return;
+
+            }
+
+
+            localStorage.setItem(
+                "crocodileCheckoutProductId",
+                String(product.id)
+            );
+
+
+            localStorage.setItem(
+                "productId",
+                String(product.id)
+            );
+
+
+            localStorage.setItem(
+                "crocodileCheckoutQuantity",
+                "1"
+            );
+
+
+            localStorage.setItem(
+                "crocodileCheckoutFromCart",
+                "false"
+            );
+
+
+            window.location.href =
+                "buy.html?productId=" +
+                encodeURIComponent(
+                    String(product.id)
+                );
+
+        }
+
+
+        /* =====================================================
+           BARGAIN PRODUCT
+        ===================================================== */
+
+        function bargainProduct(productId) {
+
+            const product =
+                products.find(
+                    function(p) {
+
+                        return String(p.id) ===
+                            String(productId);
+
+                    }
+                );
+
+
+            if (!product) {
+
+                alert(
+                    "❌ Product not found."
+                );
+
+                return;
+
+            }
+
+
+            openChat();
+
+
+            const chatMessages =
+                document.getElementById(
+                    "chatMessages"
+                );
+
+
+            if (!chatMessages) {
+                return;
+            }
+
+
+            const message =
+                document.createElement(
+                    "div"
+                );
+
+
+            message.className =
+                "bot-message";
+
+
+            message.innerHTML = `
+
+                💬 You selected
+
+                <strong>
+                    ${escapeHtml(product.name)}
+                </strong>
+
+                <br><br>
+
+                Current price:
+
+                <strong>
+                    ₹${Number(
+                        product.price || 0
+                    ).toLocaleString("en-IN")}
+                </strong>
+
+                <br><br>
+
+                You can make an offer to the seller.
+
+                <br><br>
+
+                Example:
+
+                <em>
+                    "Can you sell this for ₹1,700?"
+                </em>
+
+            `;
+
+
+            chatMessages.appendChild(
+                message
+            );
+
+
+            chatMessages.scrollTop =
+                chatMessages.scrollHeight;
+
+        }
+
+
+        /* =====================================================
+           ADD TO CART
+        ===================================================== */
+
+        function addToCart(productId) {
+
+            if (!supabaseProductsLoaded) {
+
+                alert(
+                    "⏳ Products are still loading. Please try again."
+                );
+
+                return;
+
+            }
+
+
+            const product =
+                products.find(
+                    function(p) {
+
+                        return String(p.id) ===
+                            String(productId);
+
+                    }
+                );
+
+
+            if (!product) {
+
+                alert(
+                    "❌ Product not found."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * NEVER use numeric IDs here.
+             *
+             * Always use the real Supabase UUID.
+             */
+
+            const realProductId =
+                String(product.id);
+
+
+            if (!isValidUUID(realProductId)) {
+
+                alert(
+                    "❌ Invalid product UUID."
+                );
+
+                return;
+
+            }
+
+
+            const existing =
+                cart.find(
+                    function(item) {
+
+                        const itemId =
+                            item.product_id ||
+                            item.productId ||
+                            item.id;
+
+                        return String(itemId) ===
+                            realProductId;
+
+                    }
+                );
+
+
+            if (existing) {
+
+                existing.id =
+                    realProductId;
+
+                existing.product_id =
+                    realProductId;
+
+                existing.name =
+                    product.name;
+
+                existing.price =
+                    product.price;
+
+                existing.image =
+                    product.image;
+
+                existing.quantity =
+                    Number(
+                        existing.quantity || 0
+                    ) + 1;
+
+            }
+            else {
+
+                cart.push({
+
+                    ...product,
+
+                    id:
+                        realProductId,
+
+                    product_id:
+                        realProductId,
+
+                    quantity:
+                        1
+
+                });
+
+            }
+
+
+            saveCart();
+
+            updateCartCount();
+
+
+            alert(
+                "✅ " +
+                product.name +
+                " added to cart!"
+            );
+
+        }
+
+
+        /* =====================================================
+           DISPLAY CART
+        ===================================================== */
+
+        function displayCart() {
+
+            const container =
+                document.getElementById(
+                    "cartItems"
+                );
+
+            const totalElement =
+                document.getElementById(
+                    "cartTotal"
+                );
+
+
+            if (
+                !container ||
+                !totalElement
+            ) {
+                return;
+            }
+
+
+            container.innerHTML =
+                "";
+
+
+            if (
+                !Array.isArray(cart) ||
+                cart.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <p style="
+                        text-align:center;
+                        padding:30px;
+                    ">
+                        🛒 Your cart is empty.
+                    </p>
+
+                `;
+
+
+                totalElement.textContent =
+                    "0";
+
+
+                return;
+
+            }
+
+
+            let total = 0;
+
+
+            cart.forEach(
+                function(item) {
+
+                    const price =
+                        Number(
+                            item.price
+                        ) || 0;
+
+
+                    const quantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity
+                            ) || 1
+                        );
+
+
+                    total +=
+                        price * quantity;
+
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    div.className =
+                        "cart-item";
+
+
+                    const info =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    info.className =
+                        "cart-item-info";
+
+
+                    const name =
+                        document.createElement(
+                            "h4"
+                        );
+
+
+                    name.textContent =
+                        item.name ||
+                        "Product";
+
+
+                    const priceText =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    priceText.textContent =
+                        "₹" +
+                        price.toLocaleString(
+                            "en-IN"
+                        ) +
+                        " × " +
+                        quantity;
+
+
+                    const typeText =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    typeText.textContent =
+                        item.type === "online"
+                            ? "🌐 Online"
+                            : "📦 Offline";
+
+
+                    info.appendChild(
+                        name
+                    );
+
+                    info.appendChild(
+                        priceText
+                    );
+
+                    info.appendChild(
+                        typeText
+                    );
+
+
+                    const removeButton =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    removeButton.type =
+                        "button";
+
+                    removeButton.className =
+                        "remove-cart";
+
+                    removeButton.textContent =
+                        "Remove";
+
+
+                    removeButton.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            removeFromCart(
+                                item.product_id ||
+                                item.id
+                            );
+
+                        }
+                    );
+
+
+                    div.appendChild(
+                        info
+                    );
+
+                    div.appendChild(
+                        removeButton
+                    );
+
+
+                    container.appendChild(
+                        div
+                    );
+
+                }
+            );
+
+
+            totalElement.textContent =
+                total.toLocaleString(
+                    "en-IN"
+                );
+
+        }
+
+
+        /* =====================================================
+           REMOVE FROM CART
+        ===================================================== */
+
+        function removeFromCart(productId) {
+
+            cart =
+                cart.filter(
+                    function(item) {
+
+                        const itemId =
+                            item.product_id ||
+                            item.productId ||
+                            item.id;
+
+                        return String(itemId) !==
+                            String(productId);
+
+                    }
+                );
+
+
+            saveCart();
+
+            displayCart();
+
+            updateCartCount();
+
+        }
+
+
+        /* =====================================================
+           UPDATE CART COUNT
+        ===================================================== */
+
+        function updateCartCount() {
+
+            const count =
+                cart.reduce(
+                    function(total, item) {
+
+                        return total +
+                            Math.max(
+                                1,
+                                Number(
+                                    item.quantity
+                                ) || 0
+                            );
+
+                    },
+                    0
+                );
+
+
+            const cartCount =
+                document.getElementById(
+                    "cartCount"
+                );
+
+
+            if (cartCount) {
+
+                cartCount.textContent =
+                    count;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CHECKOUT
+        ===================================================== */
+
+        function checkout() {
+
+            if (
+                !Array.isArray(cart) ||
+                cart.length === 0
+            ) {
+
+                alert(
+                    "🛒 Your cart is empty."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Build a clean UUID-only checkout cart.
+             */
+
+            const checkoutCart =
+                cart
+                    .map(
+                        function(item) {
+
+                            const productId =
+                                item.product_id ||
+                                item.productId ||
+                                item.id;
+
+
+                            return {
+
+                                ...item,
+
+                                id:
+                                    String(productId),
+
+                                product_id:
+                                    String(productId),
+
+                                quantity:
+                                    Math.max(
+                                        1,
+                                        Number(
+                                            item.quantity
+                                        ) || 1
+                                    )
+
+                            };
+
+                        }
+                    )
+                    .filter(
+                        function(item) {
+
+                            return isValidUUID(
+                                item.id
+                            );
+
+                        }
+                    );
+
+
+            if (
+                checkoutCart.length === 0
+            ) {
+
+                /*
+                 * Clear old broken cart.
+                 */
+
+                cart = [];
+
+                saveCart();
+
+                localStorage.removeItem(
+                    "crocodileCheckoutCart"
+                );
+
+                updateCartCount();
+
+
+                alert(
+                    "❌ Your cart contained old invalid product IDs. " +
+                    "Please add the products again."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Save ALL cart products.
+             */
+
+            localStorage.setItem(
+                "crocodileCheckoutCart",
+                JSON.stringify(
+                    checkoutCart
+                )
+            );
+
+
+            localStorage.setItem(
+                "crocodileCheckoutFromCart",
+                "true"
+            );
+
+
+            window.location.href =
+                "buy.html?fromCart=true";
+
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        function searchProducts() {
+
+            const input =
+                document.getElementById(
+                    "searchInput"
+                );
+
+
+            if (!input) {
+                return;
+            }
+
+
+            const searchText =
+                input.value
+                    .toLowerCase()
+                    .trim();
+
+
+            if (searchText === "") {
+
+                displayProducts(
+                    products
+                );
+
+                return;
+
+            }
+
+
+            const filteredProducts =
+                products.filter(
+                    function(product) {
+
+                        return (
+
+                            String(
+                                product.name || ""
+                            )
+                                .toLowerCase()
+                                .includes(
+                                    searchText
+                                )
+
+                            ||
+
+                            String(
+                                product.description || ""
+                            )
+                                .toLowerCase()
+                                .includes(
+                                    searchText
+                                )
+
+                            ||
+
+                            String(
+                                product.category || ""
+                            )
+                                .toLowerCase()
+                                .includes(
+                                    searchText
+                                )
+
+                        );
+
+                    }
+                );
+
+
+            if (
+                filteredProducts.length === 0
+            ) {
+
+                const container =
+                    document.getElementById(
+                        "productContainer"
+                    );
+
+
+                if (!container) {
+                    return;
+                }
+
+
+                container.innerHTML = `
+
+                    <div class="no-products">
+
+                        <div class="no-products-icon">
+                            🐊
+                        </div>
+
+                        <h2>
+                            ❌ No Products Found
+                        </h2>
+
+                        <p>
+                            Sorry, we couldn't find
+                            any product matching
+                            "<strong>${escapeHtml(
+                                searchText
+                            )}</strong>".
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                const showAllButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                showAllButton.type =
+                    "button";
+
+                showAllButton.className =
+                    "primary-btn";
+
+                showAllButton.textContent =
+                    "🔄 Show All Products";
+
+
+                showAllButton.addEventListener(
+                    "click",
+                    clearSearch
+                );
+
+
+                const noProducts =
+                    container.querySelector(
+                        ".no-products"
+                    );
+
+
+                if (noProducts) {
+
+                    noProducts.appendChild(
+                        showAllButton
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            displayProducts(
+                filteredProducts
+            );
+
+        }
+
+
+        function clearSearch() {
+
+            const input =
+                document.getElementById(
+                    "searchInput"
+                );
+
+
+            if (input) {
+
+                input.value =
+                    "";
+
+            }
+
+
+            displayProducts(
+                products
+            );
+
+        }
+
+
+        /* =====================================================
+           CATEGORY FILTER
+        ===================================================== */
+
+        function filterCategory(category) {
+
+            document
+                .querySelectorAll(
+                    ".category-container button"
+                )
+                .forEach(
+                    function(button) {
+
+                        button.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+            const selectedButton =
+                document.querySelector(
+                    '.category-container button[data-category="' +
+                    category +
+                    '"]'
+                );
+
+
+            if (selectedButton) {
+
+                selectedButton.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            if (
+                category === "all"
+            ) {
+
+                displayProducts(
+                    products
+                );
+
+                return;
+
+            }
+
+
+            const filteredProducts =
+                products.filter(
+                    function(product) {
+
+                        return String(
+                            product.category || ""
+                        )
+                            .toLowerCase() ===
+                            String(
+                                category
+                            )
+                                .toLowerCase();
+
+                    }
+                );
+
+
+            displayProducts(
+                filteredProducts
+            );
+
+        }
+
+
+        /* =====================================================
+           SCROLL
+        ===================================================== */
+
+        function scrollToProducts() {
+
+            const section =
+                document.getElementById(
+                    "products"
+                );
+
+
+            if (section) {
+
+                section.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }
+
+        }
+
+
+        /* =====================================================
+           OPEN CART
+        ===================================================== */
+
+        function openCart() {
+
+            const modal =
+                document.getElementById(
+                    "cartModal"
+                );
+
+
+            if (!modal) {
+                return;
+            }
+
+
+            modal.style.display =
+                "flex";
+
+
+            displayCart();
+
+        }
+
+
+        /* =====================================================
+           CLOSE CART
+        ===================================================== */
+
+        function closeCart() {
+
+            const modal =
+                document.getElementById(
+                    "cartModal"
+                );
+
+
+            if (!modal) {
+                return;
+            }
+
+
+            modal.style.display =
+                "none";
+
+        }
+
+
+        /* =====================================================
+           OPEN CHAT
+        ===================================================== */
+
+        function openChat() {
+
+            const modal =
+                document.getElementById(
+                    "chatModal"
+                );
+
+
+            if (!modal) {
+                return;
+            }
+
+
+            modal.style.display =
+                "flex";
+
+        }
+
+
+        /* =====================================================
+           CLOSE CHAT
+        ===================================================== */
+
+        function closeChat() {
+
+            const modal =
+                document.getElementById(
+                    "chatModal"
+                );
+
+
+            if (!modal) {
+                return;
+            }
+
+
+            modal.style.display =
+                "none";
+
+        }
+
+
+        /* =====================================================
+           CHAT SECURITY
+        ===================================================== */
+
+        function containsUnsafeInformation(
+            message
+        ) {
+
+            const patterns = [
+
+                /\b\d{10}\b/,
+                /\b\d{16}\b/,
+                /\botp\b/i,
+                /\bpassword\b/i,
+                /\bupi\b/i,
+                /\bgpay\b/i,
+                /\bgoogle\s*pay\b/i,
+                /\bphonepe\b/i,
+                /\bpaytm\b/i,
+                /\bbank\s*account\b/i,
+                /\baccount\s*number\b/i,
+                /\bcard\s*number\b/i,
+                /\bcvv\b/i,
+                /\bwhatsapp\b/i,
+                /\btelegram\b/i,
+                /\binstagram\b/i,
+                /\bgmail\b/i,
+                /https?:\/\//i,
+                /\bwww\./i
+
+            ];
+
+
+            return patterns.some(
+                function(pattern) {
+
+                    return pattern.test(
+                        message
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           SEND CHAT MESSAGE
+        ===================================================== */
+
+        function sendMessage() {
+
+            const input =
+                document.getElementById(
+                    "chatInput"
+                );
+
+
+            const messages =
+                document.getElementById(
+                    "chatMessages"
+                );
+
+
+            if (
+                !input ||
+                !messages
+            ) {
+                return;
+            }
+
+
+            const text =
+                input.value.trim();
+
+
+            if (text === "") {
+                return;
+            }
+
+
+            if (
+                containsUnsafeInformation(
+                    text
+                )
+            ) {
+
+                const warning =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                warning.className =
+                    "bot-message";
+
+
+                warning.innerHTML = `
+
+                    🛡️
+                    <strong>
+                        Security Warning
+                    </strong>
+
+                    <br><br>
+
+                    Please do not share:
+
+                    <br>
+                    • Phone numbers
+
+                    <br>
+                    • OTP
+
+                    <br>
+                    • Passwords
+
+                    <br>
+                    • Card details
+
+                    <br>
+                    • UPI/payment information
+
+                    <br>
+                    • External payment links
+
+                    <br><br>
+
+                    For your safety, keep communication
+                    and payments inside Crocodile.
+
+                `;
+
+
+                messages.appendChild(
+                    warning
+                );
+
+
+                input.value =
+                    "";
+
+
+                messages.scrollTop =
+                    messages.scrollHeight;
+
+
+                return;
+
+            }
+
+
+            const userMessage =
+                document.createElement(
+                    "div"
+                );
+
+
+            userMessage.className =
+                "user-message";
+
+
+            userMessage.textContent =
+                text;
+
+
+            messages.appendChild(
+                userMessage
+            );
+
+
+            input.value =
+                "";
+
+
+            messages.scrollTop =
+                messages.scrollHeight;
+
+
+            setTimeout(
+                function() {
+
+                    const botMessage =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    botMessage.className =
+                        "bot-message";
+
+
+                    const lowerText =
+                        text.toLowerCase();
+
+
+                    if (
+                        lowerText.includes(
+                            "price"
+                        ) ||
+                        lowerText.includes(
+                            "cost"
+                        )
+                    ) {
+
+                        botMessage.innerHTML = `
+
+                            💰 You can ask the seller
+                            about the product price
+                            or make a reasonable offer.
+
+                        `;
+
+                    }
+
+                    else if (
+                        lowerText.includes(
+                            "delivery"
+                        )
+                    ) {
+
+                        botMessage.innerHTML = `
+
+                            📦 Delivery depends on whether
+                            the product is Online or Offline.
+
+                            <br><br>
+
+                            The seller's product type
+                            determines the checkout process.
+
+                        `;
+
+                    }
+
+                    else if (
+                        lowerText.includes(
+                            "help"
+                        )
+                    ) {
+
+                        botMessage.innerHTML = `
+
+                            🐊 I'm here to help!
+
+                            <br><br>
+
+                            You can ask about:
+
+                            <br>
+                            • Product price
+
+                            <br>
+                            • Bargaining
+
+                            <br>
+                            • Delivery
+
+                            <br>
+                            • Buying a product
+
+                        `;
+
+                    }
+
+                    else {
+
+                        botMessage.innerHTML = `
+
+                            🤖 Thanks for your message.
+
+                            <br><br>
+
+                            You can ask about
+                            product price, bargaining,
+                            delivery or buying.
+
+                        `;
+
+                    }
+
+
+                    messages.appendChild(
+                        botMessage
+                    );
+
+
+                    messages.scrollTop =
+                        messages.scrollHeight;
+
+                },
+                700
+            );
+
+        }
+
+
+        /* =====================================================
+           PAGE LOAD
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                console.log(
+                    "Crocodile buyer page loaded."
+                );
+
+
+                /* =========================
+                   LOAD OLD CART
+                ========================= */
+
+                loadCart();
+
+
+                /* =========================
+                   TERMS
+                ========================= */
+
+                const overlay =
+                    document.getElementById(
+                        "termsOverlay"
+                    );
+
+
+                const checkbox =
+                    document.getElementById(
+                        "termsCheckbox"
+                    );
+
+
+                const continueBtn =
+                    document.getElementById(
+                        "continueBtn"
+                    );
+
+
+                const accepted =
+                    localStorage.getItem(
+                        "crocodileTermsAccepted"
+                    );
+
+
+                if (
+                    accepted === "true"
+                ) {
+
+                    if (overlay) {
+
+                        overlay.style.display =
+                            "none";
+
+                    }
+
+                }
+                else {
+
+                    if (overlay) {
+
+                        overlay.style.display =
+                            "flex";
+
+                    }
+
+                }
+
+
+                if (checkbox) {
+
+                    checkbox.addEventListener(
+                        "change",
+                        enableContinue
+                    );
+
+                }
+
+
+                if (continueBtn) {
+
+                    continueBtn.addEventListener(
+                        "click",
+                        acceptTerms
+                    );
+
+                }
+
+
+                /* =========================
+                   CART
+                ========================= */
+
+                const openCartButton =
+                    document.getElementById(
+                        "openCartButton"
+                    );
+
+
+                if (openCartButton) {
+
+                    openCartButton.addEventListener(
+                        "click",
+                        openCart
+                    );
+
+                }
+
+
+                const closeCartButton =
+                    document.getElementById(
+                        "closeCartButton"
+                    );
+
+
+                if (closeCartButton) {
+
+                    closeCartButton.addEventListener(
+                        "click",
+                        closeCart
+                    );
+
+                }
+
+
+                const checkoutButton =
+                    document.getElementById(
+                        "checkoutButton"
+                    );
+
+
+                if (checkoutButton) {
+
+                    checkoutButton.addEventListener(
+                        "click",
+                        checkout
+                    );
+
+                }
+
+
+                /* =========================
+                   CHAT
+                ========================= */
+
+                const openChatButton =
+                    document.getElementById(
+                        "openChatButton"
+                    );
+
+
+                if (openChatButton) {
+
+                    openChatButton.addEventListener(
+                        "click",
+                        openChat
+                    );
+
+                }
+
+
+                const closeChatButton =
+                    document.getElementById(
+                        "closeChatButton"
+                    );
+
+
+                if (closeChatButton) {
+
+                    closeChatButton.addEventListener(
+                        "click",
+                        closeChat
+                    );
+
+                }
+
+
+                const sendMessageButton =
+                    document.getElementById(
+                        "sendMessageButton"
+                    );
+
+
+                if (sendMessageButton) {
+
+                    sendMessageButton.addEventListener(
+                        "click",
+                        sendMessage
+                    );
+
+                }
+
+
+                /* =========================
+                   START SHOPPING
+                ========================= */
+
+                const startShoppingButton =
+                    document.getElementById(
+                        "startShoppingButton"
+                    );
+
+
+                if (startShoppingButton) {
+
+                    startShoppingButton.addEventListener(
+                        "click",
+                        scrollToProducts
+                    );
+
+                }
+
+
+                /* =========================
+                   SEARCH
+                ========================= */
+
+                const searchButton =
+                    document.getElementById(
+                        "searchButton"
+                    );
+
+
+                if (searchButton) {
+
+                    searchButton.addEventListener(
+                        "click",
+                        searchProducts
+                    );
+
+                }
+
+
+                const searchInput =
+                    document.getElementById(
+                        "searchInput"
+                    );
+
+
+                if (searchInput) {
+
+                    searchInput.addEventListener(
+                        "keydown",
+                        function(event) {
+
+                            if (
+                                event.key ===
+                                "Enter"
+                            ) {
+
+                                event.preventDefault();
+
+                                searchProducts();
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* =========================
+                   CATEGORIES
+                ========================= */
+
+                document
+                    .querySelectorAll(
+                        ".category-container button"
+                    )
+                    .forEach(
+                        function(button) {
+
+                            button.addEventListener(
+                                "click",
+                                function() {
+
+                                    filterCategory(
+                                        button.dataset.category
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+                /* =========================
+                   MODALS
+                ========================= */
+
+                const cartModal =
+                    document.getElementById(
+                        "cartModal"
+                    );
+
+
+                const chatModal =
+                    document.getElementById(
+                        "chatModal"
+                    );
+
+
+                if (cartModal) {
+
+                    cartModal.style.display =
+                        "none";
+
+                }
+
+
+                if (chatModal) {
+
+                    chatModal.style.display =
+                        "none";
+
+                }
+
+
+                /* =========================
+                   CART COUNT
+                ========================= */
+
+                updateCartCount();
+
+
+                /* =========================
+                   CHAT ENTER
+                ========================= */
+
+                document.addEventListener(
+                    "keydown",
+                    function(event) {
+
+                        if (
+                            event.key === "Enter" &&
+                            document.activeElement &&
+                            document.activeElement.id ===
+                                "chatInput"
+                        ) {
+
+                            event.preventDefault();
+
+                            sendMessage();
+
+                        }
+
+                    }
+                );
+
+
+                /* =========================
+                   LOAD REAL SUPABASE PRODUCTS
+                ========================= */
+
+                loadSupabaseProducts();
+
+            }
+        );
+
+
+        /* =====================================================
+           CLOSE MODALS BY CLICKING OUTSIDE
+        ===================================================== */
+
+        window.addEventListener(
+            "click",
+            function(event) {
+
+                const cartModal =
+                    document.getElementById(
+                        "cartModal"
+                    );
+
+
+                const chatModal =
+                    document.getElementById(
+                        "chatModal"
+                    );
+
+
+                if (
+                    cartModal &&
+                    event.target === cartModal
+                ) {
+
+                    closeCart();
+
+                }
+
+
+                if (
+                    chatModal &&
+                    event.target === chatModal
+                ) {
+
+                    closeChat();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,2901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crocodile - Seller</title>
+
+    
+<style>
+/* =========================================
+   CROCODILE SELLER WEBSITE
+   SELLER.CSS
+========================================= */
+
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7f6;
+    color: #222;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.seller-navbar {
+    width: 100%;
+    min-height: 75px;
+    padding: 15px 5%;
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+
+/* LOGO */
+
+.seller-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 23px;
+    font-weight: 800;
+    color: #168b45;
+}
+
+.seller-logo:first-letter {
+    font-size: 28px;
+}
+
+
+/* NAV LINKS */
+
+.seller-navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.seller-navbar nav a {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+
+    transition: 0.3s;
+}
+
+.seller-navbar nav a:hover {
+    color: #168b45;
+}
+
+
+/* BUYER BUTTON */
+
+.buyer-btn {
+    padding: 10px 17px;
+
+    background: #168b45;
+    color: white;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.buyer-btn:hover {
+    background: #116c36;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.seller-hero {
+    min-height: 600px;
+    padding: 100px 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            rgba(10, 60, 35, 0.92),
+            rgba(12, 91, 48, 0.92)
+        );
+}
+
+.hero-content {
+    max-width: 850px;
+    color: white;
+}
+
+.hero-badge {
+    display: inline-block;
+
+    padding: 8px 18px;
+    margin-bottom: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 30px;
+
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.hero-content h1 {
+    font-size: 55px;
+    line-height: 1.15;
+    margin-bottom: 22px;
+}
+
+.hero-content h1 span {
+    color: #8ff0b4;
+}
+
+.hero-content p {
+    max-width: 700px;
+    margin: 0 auto 35px;
+
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* HERO BUTTONS */
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.primary-btn,
+.secondary-btn {
+    display: inline-block;
+
+    padding: 14px 25px;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.primary-btn {
+    background: #168b45;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #0e6d34;
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: white;
+    color: #168b45;
+}
+
+.secondary-btn:hover {
+    background: #eaf8ef;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+.section-title {
+    max-width: 750px;
+
+    margin: 0 auto 50px;
+
+    text-align: center;
+}
+
+.section-title span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #168b45;
+
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.section-title h2 {
+    margin-bottom: 12px;
+
+    color: #222;
+
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.section-title p {
+    color: #666;
+    font-size: 16px;
+}
+
+
+/* =========================================
+   BENEFITS
+========================================= */
+
+.benefits-section {
+    padding: 90px 5%;
+    background: white;
+}
+
+.benefits-container {
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 22px;
+}
+
+.benefit-card {
+    padding: 30px 22px;
+
+    background: #f8faf9;
+
+    border: 1px solid #e5e9e7;
+    border-radius: 14px;
+
+    text-align: center;
+
+    transition: 0.3s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-7px);
+
+    border-color: #b9dfc7;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.benefit-icon {
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e9f8ef;
+
+    border-radius: 50%;
+
+    font-size: 30px;
+}
+
+.benefit-card h3 {
+    margin-bottom: 10px;
+
+    font-size: 19px;
+}
+
+.benefit-card p {
+    color: #666;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   REGISTER SECTION
+========================================= */
+
+.register-section {
+    padding: 90px 5%;
+
+    background: #f5f7f6;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 850px;
+
+    margin: auto;
+
+    padding: 40px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+
+/* FORM HEADING */
+
+.form-heading {
+    margin-top: 28px;
+    margin-bottom: 20px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.form-heading:first-child {
+    margin-top: 0;
+}
+
+.form-heading h3 {
+    color: #168b45;
+    font-size: 19px;
+}
+
+
+/* FORM ROW */
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+/* FORM GROUP */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+
+    background: white;
+
+    color: #222;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+.form-group input {
+    height: 48px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #168b45;
+
+    box-shadow: 0 0 0 3px rgba(22, 139, 69, 0.08);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+
+/* FILE INPUT */
+
+.form-group input[type="file"] {
+    height: auto;
+    padding: 10px;
+
+    background: #fafafa;
+
+    cursor: pointer;
+}
+
+.form-group small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   COMMISSION BOX
+========================================= */
+
+.commission-box {
+    margin: 25px 0;
+
+    padding: 22px;
+
+    background: #eef9f2;
+
+    border-left: 5px solid #168b45;
+
+    border-radius: 8px;
+}
+
+.commission-box h3 {
+    margin-bottom: 10px;
+
+    color: #168b45;
+
+    font-size: 18px;
+}
+
+.commission-box p {
+    margin-bottom: 7px;
+
+    color: #555;
+
+    font-size: 14px;
+}
+
+.commission-box strong {
+    color: #168b45;
+}
+
+
+/* =========================================
+   SELLER TERMS
+========================================= */
+
+.seller-terms {
+    margin: 25px 0;
+    padding: 18px;
+
+    background: #fafafa;
+
+    border: 1px solid #e2e2e2;
+
+    border-radius: 8px;
+}
+
+.checkbox-label {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    color: #555;
+}
+
+.checkbox-label input {
+    width: 18px;
+    height: 18px;
+
+    margin-top: 2px;
+
+    accent-color: #168b45;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.submit-btn {
+    width: 100%;
+
+    height: 50px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #168b45;
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #116c36;
+
+    transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* FORM MESSAGE */
+
+.form-message {
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   LOGIN SECTION
+========================================= */
+
+.login-section {
+    padding: 90px 5%;
+
+    background: white;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+
+    margin: auto;
+}
+
+.login-container form {
+    padding: 35px;
+
+    background: #f8faf9;
+
+    border: 1px solid #e2e8e4;
+
+    border-radius: 15px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.login-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e9f8ef;
+
+    border-radius: 50%;
+
+    font-size: 32px;
+
+    text-align: center;
+}
+
+.login-container h3 {
+    margin-bottom: 25px;
+
+    text-align: center;
+
+    font-size: 21px;
+}
+
+.register-link {
+    margin-top: 20px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #168b45;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   RULES
+========================================= */
+
+.rules-section {
+    padding: 90px 5%;
+
+    background: #f5f7f6;
+}
+
+.rules-container {
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+}
+
+.rule-card {
+    padding: 28px;
+
+    background: white;
+
+    border-radius: 13px;
+
+    border: 1px solid #e5e5e5;
+
+    transition: 0.3s;
+}
+
+.rule-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+.rule-card > span {
+    display: inline-flex;
+
+    width: 38px;
+    height: 38px;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    background: #e9f8ef;
+
+    border-radius: 50%;
+
+    color: #168b45;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.rule-card h3 {
+    margin-bottom: 8px;
+
+    font-size: 18px;
+}
+
+.rule-card p {
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   ABOUT
+========================================= */
+
+.about-section {
+    padding: 100px 5%;
+
+    background: white;
+}
+
+.about-content {
+    max-width: 850px;
+
+    margin: auto;
+
+    text-align: center;
+}
+
+.about-content > span {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #168b45;
+
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.about-content h2 {
+    margin-bottom: 20px;
+
+    font-size: 38px;
+    line-height: 1.2;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+
+    color: #666;
+
+    font-size: 16px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.seller-footer {
+    padding: 35px 5%;
+
+    background: #123b27;
+
+    color: white;
+
+    text-align: center;
+}
+
+.footer-logo {
+    margin-bottom: 10px;
+
+    color: #8ff0b4;
+
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.seller-footer > p {
+    margin-bottom: 18px;
+
+    color: rgba(255, 255, 255, 0.75);
+
+    font-size: 13px;
+}
+
+.footer-links {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.85);
+
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: #8ff0b4;
+}
+
+
+/* =========================================
+   INPUT VALIDATION
+========================================= */
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+    border-color: #d9534f;
+}
+
+.form-group input:valid:not(:placeholder-shown),
+.form-group textarea:valid:not(:placeholder-shown) {
+    border-color: #168b45;
+}
+
+
+/* =========================================
+   SELECTION
+========================================= */
+
+::selection {
+    background: #168b45;
+    color: white;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #168b45;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #116c36;
+}
+
+
+/* =========================================
+   RESPONSIVE - 900px
+========================================= */
+
+@media (max-width: 900px) {
+
+    .seller-navbar {
+        padding: 14px 4%;
+    }
+
+    .seller-navbar nav {
+        gap: 15px;
+    }
+
+    .seller-navbar nav a {
+        font-size: 14px;
+    }
+
+    .benefits-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .rules-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-content h1 {
+        font-size: 45px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - 700px
+========================================= */
+
+@media (max-width: 700px) {
+
+    .seller-navbar {
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 15px;
+    }
+
+    .seller-logo {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .seller-navbar nav {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+
+        overflow-x: auto;
+
+        padding-bottom: 3px;
+    }
+
+    .buyer-btn {
+        display: none;
+    }
+
+    .seller-hero {
+        min-height: 520px;
+
+        padding: 80px 5%;
+    }
+
+    .hero-content h1 {
+        font-size: 38px;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+    }
+
+    .form-container {
+        padding: 28px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .section-title h2 {
+        font-size: 30px;
+    }
+
+    .about-content h2 {
+        font-size: 31px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - 600px
+========================================= */
+
+@media (max-width: 600px) {
+
+    .benefits-container {
+        grid-template-columns: 1fr;
+    }
+
+    .rules-container {
+        grid-template-columns: 1fr;
+    }
+
+    .seller-hero {
+        padding: 70px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .hero-content p {
+        font-size: 15px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .benefits-section,
+    .register-section,
+    .login-section,
+    .rules-section,
+    .about-section {
+        padding: 65px 5%;
+    }
+
+    .section-title {
+        margin-bottom: 35px;
+    }
+
+    .section-title h2 {
+        font-size: 27px;
+    }
+
+    .form-container {
+        padding: 22px 15px;
+        border-radius: 12px;
+    }
+
+    .login-container form {
+        padding: 25px 18px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - 400px
+========================================= */
+
+@media (max-width: 400px) {
+
+    .seller-logo {
+        font-size: 20px;
+    }
+
+    .seller-navbar nav {
+        gap: 10px;
+    }
+
+    .seller-navbar nav a {
+        font-size: 12px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+    }
+
+    .section-title h2 {
+        font-size: 25px;
+    }
+
+    .form-heading h3 {
+        font-size: 17px;
+    }
+
+}
+
+
+/* =========================================
+   END OF SELLER CSS
+========================================= */
+</style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="seller-navbar">
+
+        <div class="seller-logo">
+            🐊 <span>CROCODILE</span>
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#register">Register</a>
+            <a href="#login">Login</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <a href="index.html" class="buyer-btn">
+            🛒 Buyer Website
+        </a>
+
+    </header>
+
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+
+    <section id="home" class="seller-hero">
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                🐊 CROCODILE SELLER
+            </span>
+
+            <h1>
+                Grow Your Business With
+                <span>Crocodile</span>
+            </h1>
+
+            <p>
+                Sell your products, connect with customers,
+                negotiate prices and grow your business safely.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#register" class="primary-btn">
+                    🚀 Become a Seller
+                </a>
+
+                <a href="#login" class="secondary-btn">
+                    🔐 Seller Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SELLER BENEFITS
+    ========================== -->
+
+    <section class="benefits-section">
+
+        <div class="section-title">
+
+            <span>WHY SELL WITH US?</span>
+
+            <h2>
+                Everything You Need To Sell
+            </h2>
+
+            <p>
+                Crocodile provides sellers with a simple,
+                secure and customer-friendly platform.
+            </p>
+
+        </div>
+
+
+        <div class="benefits-container">
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    📦
+                </div>
+
+                <h3>
+                    Sell Products
+                </h3>
+
+                <p>
+                    Add your products and reach customers
+                    through the Crocodile marketplace.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    💬
+                </div>
+
+                <h3>
+                    Customer Bargaining
+                </h3>
+
+                <p>
+                    Communicate with customers and negotiate
+                    product prices directly.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Secure Platform
+                </h3>
+
+                <p>
+                    Our platform is designed with security
+                    and customer privacy in mind.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    📈
+                </div>
+
+                <h3>
+                    Grow Your Business
+                </h3>
+
+                <p>
+                    Reach more customers and manage your
+                    products and orders from one dashboard.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SELLER REGISTRATION
+    ========================== -->
+
+    <section id="register" class="register-section">
+
+        <div class="section-title">
+
+            <span>SELLER REGISTRATION</span>
+
+            <h2>
+                Become A Crocodile Seller
+            </h2>
+
+            <p>
+                Submit your details for verification.
+                Your seller account will be activated after admin approval.
+            </p>
+
+        </div>
+
+
+        <div class="form-container">
+
+            <form id="sellerRegistrationForm">
+
+                <!-- PERSONAL DETAILS -->
+
+                <div class="form-heading">
+                    <h3>👤 Personal Information</h3>
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="firstName">
+                            First Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            placeholder="Enter first name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="lastName">
+                            Last Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            placeholder="Enter last name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="sellerEmail">
+                            Email Address *
+                        </label>
+
+                        <input
+                            type="email"
+                            id="sellerEmail"
+                            name="email"
+                            placeholder="Enter email address"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="sellerPhone">
+                            Phone Number *
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="sellerPhone"
+                            name="phone"
+                            placeholder="Enter phone number"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- SHOP DETAILS -->
+
+                <div class="form-heading">
+
+                    <h3>
+                        🏪 Shop Information
+                    </h3>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="shopName">
+                        Shop Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="shopName"
+                        name="shopName"
+                        placeholder="Enter shop name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="shopAddress">
+                        Shop Address *
+                    </label>
+
+                    <textarea
+                        id="shopAddress"
+                        name="shopAddress"
+                        rows="4"
+                        placeholder="Enter complete shop address"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="shopCity">
+                            City *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="shopCity"
+                            name="city"
+                            placeholder="Enter city"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="shopPincode">
+                            Postal / ZIP Code *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="shopPincode"
+                            name="pincode"
+                            placeholder="Enter postal code"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- SHOP PHOTO -->
+
+                <div class="form-group">
+
+                    <label for="shopPhoto">
+                        Shop Photo *
+                    </label>
+
+                    <input
+                        type="file"
+                        id="shopPhoto"
+                        name="shopPhoto"
+                        accept="image/*"
+                        required
+                    >
+
+                    <small>
+                        Upload a clear photo of your shop.
+                    </small>
+
+                </div>
+
+
+                <!-- VERIFICATION DOCUMENT -->
+
+                <div class="form-group">
+
+                    <label for="verificationDocument">
+                        Verification Document *
+                    </label>
+
+                    <input
+                        type="file"
+                        id="verificationDocument"
+                        name="verificationDocument"
+                        accept="image/*,.pdf"
+                        required
+                    >
+
+                    <small>
+                        Upload the required business verification document.
+                        Use test/dummy information for your college prototype.
+                    </small>
+
+                </div>
+
+
+                <!-- LOGIN DETAILS -->
+
+                <div class="form-heading">
+
+                    <h3>
+                        🔐 Login Information
+                    </h3>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="sellerPassword">
+                        Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="sellerPassword"
+                        name="password"
+                        placeholder="Create a strong password"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- COMMISSION TERMS -->
+
+                <div class="commission-box">
+
+                    <h3>
+                        💰 Seller Commission
+                    </h3>
+
+                    <p>
+                        Crocodile charges a
+                        <strong>10% commission</strong>
+                        on every successful sale.
+                    </p>
+
+                    <p>
+                        Example:
+                        If the final negotiated price is
+                        <strong>₹10,000</strong>,
+                        Crocodile commission is
+                        <strong>₹1,000</strong>
+                        and the seller receives
+                        <strong>₹9,000</strong>.
+                    </p>
+
+                </div>
+
+
+                <!-- TERMS -->
+
+                <div class="seller-terms">
+
+                    <label class="checkbox-label">
+
+                        <input
+                            type="checkbox"
+                            id="sellerAgreement"
+                            required
+                        >
+
+                        <span>
+                            I agree to the Crocodile Seller
+                            Terms & Conditions, commission policy,
+                            product rules and security policies.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    📝 Submit Seller Application
+                </button>
+
+
+                <p class="form-message" id="registrationMessage"></p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SELLER LOGIN
+    ========================== -->
+
+    <section id="login" class="login-section">
+
+        <div class="section-title">
+
+            <span>SELLER LOGIN</span>
+
+            <h2>
+                Welcome Back, Seller
+            </h2>
+
+            <p>
+                Login to manage your products, orders and customers.
+            </p>
+
+        </div>
+
+
+        <div class="login-container">
+
+            <form id="sellerLoginForm">
+
+                <div class="login-icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Seller Account Login
+                </h3>
+
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    🔓 Login
+                </button>
+
+
+                <p
+                    class="form-message"
+                    id="loginMessage"
+                ></p>
+
+
+                <p class="register-link">
+                    Don't have a seller account?
+                    <a href="#register">
+                        Register Now
+                    </a>
+                </p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SELLER RULES
+    ========================== -->
+
+    <section class="rules-section">
+
+        <div class="section-title">
+
+            <span>SELLER RULES</span>
+
+            <h2>
+                Important Seller Guidelines
+            </h2>
+
+        </div>
+
+
+        <div class="rules-container">
+
+            <div class="rule-card">
+
+                <span>01</span>
+
+                <h3>
+                    Admin Approval
+                </h3>
+
+                <p>
+                    Seller accounts and products must be
+                    approved by the Crocodile admin.
+                </p>
+
+            </div>
+
+
+            <div class="rule-card">
+
+                <span>02</span>
+
+                <h3>
+                    Correct Product Information
+                </h3>
+
+                <p>
+                    Sellers must provide accurate product
+                    descriptions, prices and images.
+                </p>
+
+            </div>
+
+
+            <div class="rule-card">
+
+                <span>03</span>
+
+                <h3>
+                    Online / Offline Classification
+                </h3>
+
+                <p>
+                    Sellers must correctly classify products
+                    as Online or Offline.
+                </p>
+
+            </div>
+
+
+            <div class="rule-card">
+
+                <span>04</span>
+
+                <h3>
+                    No Off-Platform Payments
+                </h3>
+
+                <p>
+                    Sellers must not request customers to
+                    make payments outside Crocodile.
+                </p>
+
+            </div>
+
+
+            <div class="rule-card">
+
+                <span>05</span>
+
+                <h3>
+                    Customer Privacy
+                </h3>
+
+                <p>
+                    Customer information must be handled
+                    responsibly and securely.
+                </p>
+
+            </div>
+
+
+            <div class="rule-card">
+
+                <span>06</span>
+
+                <h3>
+                    10% Commission
+                </h3>
+
+                <p>
+                    A 10% Crocodile commission applies to
+                    every successful sale.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ABOUT
+    ========================== -->
+
+    <section id="about" class="about-section">
+
+        <div class="about-content">
+
+            <span>
+                ABOUT CROCODILE
+            </span>
+
+            <h2>
+                A Better Way To Sell Online
+            </h2>
+
+            <p>
+                Crocodile connects sellers and customers through
+                a secure marketplace where customers can discover
+                products, communicate with sellers and negotiate
+                prices before purchasing.
+            </p>
+
+            <p>
+                Every seller and product goes through an approval
+                process to maintain platform quality and safety.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="seller-footer">
+
+        <div class="footer-logo">
+            🐊 CROCODILE
+        </div>
+
+        <p>
+            © 2026 Crocodile. All rights reserved.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Buyer Website
+            </a>
+
+            <a href="#register">
+                Become a Seller
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ============================================================
+// CROCODILE - SUPABASE CLIENT
+// Paste your Supabase Project URL and anon/public key below.
+// NEVER put a Supabase service_role key in browser code.
+// ============================================================
+const SUPABASE_URL = "https://kczfbgqdsvlaghjhtevs.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjemZiZ3Fkc3ZsYWdoamh0ZXZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzc0MDksImV4cCI6MjEwNTgxMzQwOX0.zVcum-8MAy69fqNjKzLOTP7VCFYTOapMzH_uktJrKII";
+
+if (!window.supabase) {
+    console.error("Supabase JS library is not loaded.");
+}
+
+const supabaseClient = window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+
+window.crocodileSupabase = supabaseClient;
+
+</script>
+<script>
+/* =========================================================
+   CROCODILE SELLER WEBSITE
+   SELLER.JS
+   Backend Connected Version
+========================================================= */
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    setupSellerRegistration();
+    setupSellerLogin();
+    setupPasswordStrength();
+    setupConfirmPassword();
+    setupFileInputs();
+    setupSellerNavigation();
+
+});
+
+
+/* =========================================================
+   SELLER REGISTRATION
+========================================================= */
+
+function setupSellerRegistration() {
+
+    const registrationForm =
+        document.getElementById("sellerRegistrationForm");
+
+    if (!registrationForm) return;
+
+
+    registrationForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+        /* -------------------------------------------------
+           GET FORM VALUES
+        ------------------------------------------------- */
+
+        const firstName = getValue("firstName");
+        const lastName = getValue("lastName");
+        const email = getValue("sellerEmail").toLowerCase();
+        const phone = getValue("sellerPhone");
+        const shopName = getValue("shopName");
+        const shopAddress = getValue("shopAddress");
+        const city = getValue("shopCity");
+        const pincode = getValue("shopPincode");
+
+        const password =
+            document.getElementById("sellerPassword")?.value || "";
+
+        const confirmPassword =
+            document.getElementById("confirmPassword")?.value || "";
+
+        const shopPhoto =
+            document.getElementById("shopPhoto")?.files[0];
+
+        const verificationDocument =
+            document.getElementById("verificationDocument")?.files[0];
+
+        const agreement =
+            document.getElementById("sellerAgreement")?.checked;
+
+        const message =
+            document.getElementById("registrationMessage");
+
+
+        /* -------------------------------------------------
+           BASIC VALIDATION
+        ------------------------------------------------- */
+
+        if (
+            !firstName ||
+            !lastName ||
+            !email ||
+            !phone ||
+            !shopName ||
+            !shopAddress ||
+            !city ||
+            !pincode ||
+            !password ||
+            !confirmPassword
+        ) {
+
+            showMessage(
+                message,
+                "Please fill in all required fields.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           EMAIL VALIDATION
+        ------------------------------------------------- */
+
+        if (!validateEmail(email)) {
+
+            showMessage(
+                message,
+                "Please enter a valid email address.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           PHONE VALIDATION
+        ------------------------------------------------- */
+
+        if (!/^[0-9]{10}$/.test(phone)) {
+
+            showMessage(
+                message,
+                "Please enter a valid 10-digit phone number.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           PASSWORD VALIDATION
+        ------------------------------------------------- */
+
+        if (password.length < 8) {
+
+            showMessage(
+                message,
+                "Password must contain at least 8 characters.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                message,
+                "Passwords do not match.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           FILE VALIDATION
+        ------------------------------------------------- */
+
+        if (!shopPhoto) {
+
+            showMessage(
+                message,
+                "Please upload your shop photo.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!verificationDocument) {
+
+            showMessage(
+                message,
+                "Please upload your verification document.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           FILE SIZE VALIDATION
+        ------------------------------------------------- */
+
+        const maxFileSize = 5 * 1024 * 1024;
+
+
+        if (shopPhoto.size > maxFileSize) {
+
+            showMessage(
+                message,
+                "Shop photo must be smaller than 5 MB.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (verificationDocument.size > maxFileSize) {
+
+            showMessage(
+                message,
+                "Verification document must be smaller than 5 MB.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           SELLER AGREEMENT
+        ------------------------------------------------- */
+
+        if (!agreement) {
+
+            showMessage(
+                message,
+                "Please agree to the Crocodile Seller Terms & Conditions.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           PREVENT MULTIPLE SUBMISSIONS
+        ------------------------------------------------- */
+
+        const submitButton =
+            registrationForm.querySelector(
+                'button[type="submit"]'
+            );
+
+
+        if (submitButton) {
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "⏳ Submitting...";
+
+        }
+
+
+        showMessage(
+            message,
+            "⏳ Submitting your seller application...",
+            "warning"
+        );
+        /* =================================================
+           SUPABASE SELLER REGISTRATION
+        ================================================= */
+
+        try {
+            if (!window.crocodileSupabase) {
+                throw new Error("Supabase is not configured.");
+            }
+
+            const sb = window.crocodileSupabase;
+
+            const { data: authData, error: authError } =
+                await sb.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: `${firstName} ${lastName}`,
+                            role: "seller"
+                        }
+                    }
+                });
+
+            if (authError) throw authError;
+
+            if (!authData.user) {
+                throw new Error("Supabase did not create the seller account.");
+            }
+
+            if (!authData.session) {
+                throw new Error(
+                    "Account created. Supabase email confirmation is enabled. " +
+                    "Confirm the email, then upload the application documents from the seller account."
+                );
+            }
+
+            const userId = authData.user.id;
+
+            const uploadFile = async (bucket, file) => {
+                const extension = file.name.includes(".")
+                    ? file.name.split(".").pop().toLowerCase()
+                    : "bin";
+                const path = `${userId}/${crypto.randomUUID()}.${extension}`;
+
+                const { error } = await sb.storage
+                    .from(bucket)
+                    .upload(path, file, {
+                        upsert: false,
+                        contentType: file.type || "application/octet-stream"
+                    });
+
+                if (error) throw error;
+                return path;
+            };
+
+            const shopPhotoPath =
+                await uploadFile("shop-photos", shopPhoto);
+
+            const verificationDocumentPath =
+                await uploadFile("verification-documents", verificationDocument);
+
+            const { error: sellerError } = await sb
+                .from("sellers")
+                .insert({
+                    id: userId,
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email.toLowerCase(),
+                    phone,
+                    shop_name: shopName,
+                    shop_address: shopAddress,
+                    city,
+                    pincode,
+                    shop_photo: shopPhotoPath,
+                    verification_document: verificationDocumentPath,
+                    status: "pending"
+                });
+
+            if (sellerError) throw sellerError;
+
+            showMessage(
+                message,
+                "✅ Seller application submitted successfully. Waiting for Admin approval.",
+                "success"
+            );
+
+            localStorage.setItem(
+                "crocodileSeller",
+                JSON.stringify({
+                    name: `${firstName} ${lastName}`,
+                    email,
+                    shopName,
+                    sellerId: userId,
+                    status: "pending"
+                })
+            );
+
+            registrationForm.reset();
+
+            setTimeout(function () {
+                showLoginForm();
+            }, 2500);
+
+        }
+
+
+        /* =================================================
+           ERROR HANDLING
+        ================================================= */
+
+        catch (error) {
+
+            console.error(
+                "Seller registration error:",
+                error
+            );
+
+
+            showMessage(
+                message,
+                "❌ " + error.message,
+                "error"
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           ENABLE BUTTON AGAIN
+        ------------------------------------------------- */
+
+        finally {
+
+            if (submitButton) {
+
+                submitButton.disabled = false;
+
+                submitButton.textContent =
+                    "📝 Submit Seller Application";
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   SELLER LOGIN
+========================================================= */
+
+function setupSellerLogin() {
+
+    const loginForm =
+        document.getElementById("sellerLoginForm");
+
+    if (!loginForm) return;
+
+
+    loginForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const email =
+                getValue("loginEmail");
+
+
+            const password =
+                document.getElementById(
+                    "loginPassword"
+                )?.value || "";
+
+
+            const message =
+                document.getElementById(
+                    "loginMessage"
+                );
+
+
+            if (!email || !password) {
+
+                showMessage(
+                    message,
+                    "Please enter your email and password.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            (async function () {
+                try {
+                    if (!window.crocodileSupabase) throw new Error("Supabase is not configured.");
+
+                    const { data, error } =
+                        await crocodileSupabase.auth.signInWithPassword({
+                            email,
+                            password
+                        });
+
+                    if (error) throw error;
+
+                    const { data: seller, error: sellerError } =
+                        await crocodileSupabase
+                            .from("sellers")
+                            .select("id,first_name,last_name,email,shop_name,status")
+                            .eq("id", data.user.id)
+                            .single();
+
+                    if (sellerError) throw sellerError;
+
+                    if (seller.status !== "approved") {
+                        await crocodileSupabase.auth.signOut();
+                        throw new Error(
+                            seller.status === "pending"
+                                ? "Your seller application is still pending admin approval."
+                                : "Your seller application was rejected by the admin."
+                        );
+                    }
+
+                    sessionStorage.setItem("crocodileSellerId", seller.id);
+                    sessionStorage.setItem("crocodileSellerName", `${seller.first_name} ${seller.last_name}`);
+                    sessionStorage.setItem("crocodileSellerEmail", seller.email);
+
+                    showMessage(message, "✅ Login successful. Opening seller dashboard...", "success");
+                    setTimeout(() => window.location.href = "seller-dashboard.html", 700);
+
+                } catch (error) {
+                    showMessage(message, "❌ " + error.message, "error");
+                }
+            })();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+========================================================= */
+
+function setupPasswordStrength() {
+
+    const passwordInput =
+        document.getElementById(
+            "sellerPassword"
+        );
+
+
+    if (!passwordInput) return;
+
+
+    passwordInput.addEventListener(
+        "input",
+        function () {
+
+            const strength =
+                checkPasswordStrength(
+                    this.value
+                );
+
+
+            const strengthElement =
+                document.getElementById(
+                    "passwordStrength"
+                );
+
+
+            if (strengthElement) {
+
+                strengthElement.textContent =
+                    "Password strength: " +
+                    strength;
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CONFIRM PASSWORD
+========================================================= */
+
+function setupConfirmPassword() {
+
+    const confirmPasswordInput =
+        document.getElementById(
+            "confirmPassword"
+        );
+
+
+    if (!confirmPasswordInput) return;
+
+
+    confirmPasswordInput.addEventListener(
+        "input",
+        function () {
+
+            const password =
+                document.getElementById(
+                    "sellerPassword"
+                )?.value || "";
+
+
+            if (this.value === "") {
+
+                this.style.borderColor =
+                    "#d8d8d8";
+
+            }
+
+            else if (
+                this.value === password
+            ) {
+
+                this.style.borderColor =
+                    "#168b45";
+
+            }
+
+            else {
+
+                this.style.borderColor =
+                    "#d9534f";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FILE INPUTS
+========================================================= */
+
+function setupFileInputs() {
+
+    const shopPhotoInput =
+        document.getElementById(
+            "shopPhoto"
+        );
+
+
+    const verificationInput =
+        document.getElementById(
+            "verificationDocument"
+        );
+
+
+    if (shopPhotoInput) {
+
+        shopPhotoInput.addEventListener(
+            "change",
+            function () {
+
+                if (this.files.length > 0) {
+
+                    console.log(
+                        "Shop photo selected:",
+                        this.files[0].name
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (verificationInput) {
+
+        verificationInput.addEventListener(
+            "change",
+            function () {
+
+                if (this.files.length > 0) {
+
+                    console.log(
+                        "Verification document selected:",
+                        this.files[0].name
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SELLER NAVIGATION
+========================================================= */
+
+function setupSellerNavigation() {
+
+
+    /* -------------------------------------------------
+       REGISTER LINKS
+    ------------------------------------------------- */
+
+    const registerLinks =
+        document.querySelectorAll(
+            ".show-register"
+        );
+
+
+    registerLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    showRegisterForm();
+
+                }
+            );
+
+        }
+    );
+
+
+    /* -------------------------------------------------
+       LOGIN LINKS
+    ------------------------------------------------- */
+
+    const loginLinks =
+        document.querySelectorAll(
+            ".show-login"
+        );
+
+
+    loginLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    showLoginForm();
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SHOW REGISTER FORM
+========================================================= */
+
+function showRegisterForm() {
+
+    const loginSection =
+        document.getElementById(
+            "sellerLoginSection"
+        );
+
+
+    const registerSection =
+        document.getElementById(
+            "sellerRegisterSection"
+        );
+
+
+    if (loginSection) {
+
+        loginSection.style.display =
+            "none";
+
+    }
+
+
+    if (registerSection) {
+
+        registerSection.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   SHOW LOGIN FORM
+========================================================= */
+
+function showLoginForm() {
+
+    const loginSection =
+        document.getElementById(
+            "sellerLoginSection"
+        );
+
+
+    const registerSection =
+        document.getElementById(
+            "sellerRegisterSection"
+        );
+
+
+    if (registerSection) {
+
+        registerSection.style.display =
+            "none";
+
+    }
+
+
+    if (loginSection) {
+
+        loginSection.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   EMAIL VALIDATION
+========================================================= */
+
+function validateEmail(email) {
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+}
+
+
+/* =========================================================
+   GET VALUE
+========================================================= */
+
+function getValue(id) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (!element) {
+
+        return "";
+
+    }
+
+
+    return element.value.trim();
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    element,
+    text,
+    type
+) {
+
+    if (!element) return;
+
+
+    element.textContent =
+        text;
+
+
+    element.style.padding =
+        "10px";
+
+
+    element.style.borderRadius =
+        "7px";
+
+
+    if (type === "success") {
+
+        element.style.color =
+            "#168b45";
+
+        element.style.background =
+            "#e9f8ef";
+
+    }
+
+    else if (type === "error") {
+
+        element.style.color =
+            "#c62828";
+
+        element.style.background =
+            "#fdecec";
+
+    }
+
+    else if (type === "warning") {
+
+        element.style.color =
+            "#9a6700";
+
+        element.style.background =
+            "#fff7d6";
+
+    }
+
+    else {
+
+        element.style.color =
+            "#333";
+
+        element.style.background =
+            "#f2f2f2";
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH CHECK
+========================================================= */
+
+function checkPasswordStrength(password) {
+
+    let score = 0;
+
+
+    if (password.length >= 8) {
+
+        score++;
+
+    }
+
+
+    if (/[A-Z]/.test(password)) {
+
+        score++;
+
+    }
+
+
+    if (/[a-z]/.test(password)) {
+
+        score++;
+
+    }
+
+
+    if (/[0-9]/.test(password)) {
+
+        score++;
+
+    }
+
+
+    if (/[^A-Za-z0-9]/.test(password)) {
+
+        score++;
+
+    }
+
+
+    if (score <= 2) {
+
+        return "Weak";
+
+    }
+
+
+    if (score <= 4) {
+
+        return "Medium";
+
+    }
+
+
+    return "Strong";
+
+}
+</script>
+</body>
+</html>
